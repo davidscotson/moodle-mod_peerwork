@@ -37,7 +37,7 @@ define(['jquery'], function($) {
             if (updatebut && formatselect) {
                 updatebut.css('display', 'none');
                 formatselect.on('change', function() {
-                    $('form.mform').attr('action', action + '#' + ancestor.attr('id'));
+                    $('form.mform').attr('action', 'modedit.php' + '#' + ancestor.attr('id'));
                     updatebut.trigger('click');
                 });
             }
