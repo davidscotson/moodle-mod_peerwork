@@ -85,6 +85,7 @@ function peerwork_add_instance(stdClass $peerwork, mod_peerwork_mod_form $mform 
     //Add to calendar.
     if ($peerwork->duedate) {
         $event = new stdClass();
+        $event->type = CALENDAR_EVENT_TYPE_ACTION;
         $event->name        = $peerwork->name;
         $event->description = format_module_intro('peerwork', $peerwork, $peerwork->coursemodule, false);
         $event->format      = FORMAT_HTML;
@@ -95,6 +96,7 @@ function peerwork_add_instance(stdClass $peerwork, mod_peerwork_mod_form $mform 
         $event->instance    = $peerwork->id;
         $event->eventtype   = 'due';
         $event->timestart   = $peerwork->duedate;
+        $event->timesort   = $peerwork->duedate;
         $event->timeduration = 0;
 
         calendar_event::create($event);
@@ -146,16 +148,18 @@ function peerwork_update_instance(stdClass $peerwork, mod_peerwork_mod_form $mfo
         $event = new stdClass();
         
         if ($event->id = $DB->get_field('event', 'id', array('modulename' => 'peerwork', 'instance' => $peerwork->id))) {
-
+            $event->type = CALENDAR_EVENT_TYPE_ACTION;
             $event->name        = $peerwork->name;
             $event->description = format_module_intro('peerwork', $peerwork, $peerwork->coursemodule, false);
             $event->format      = FORMAT_HTML;
             $event->timestart   = $peerwork->duedate;
+            $event->timesort   = $peerwork->duedate;
 
             $calendarevent = calendar_event::load($event->id);
             $calendarevent->update($event);
         } else {
             $event = new stdClass();
+            $event->type = CALENDAR_EVENT_TYPE_ACTION;
             $event->name        = $peerwork->name;
             $event->description = format_module_intro('peerwork', $peerwork, $peerwork->coursemodule, false);
             $event->format      = FORMAT_HTML;
@@ -166,6 +170,7 @@ function peerwork_update_instance(stdClass $peerwork, mod_peerwork_mod_form $mfo
             $event->instance    = $peerwork->id;
             $event->eventtype   = 'due';
             $event->timestart   = $peerwork->duedate;
+            $event->timesort   = $peerwork->duedate;
             $event->timeduration = 0;
 
             calendar_event::create($event);
@@ -224,7 +229,6 @@ function peerwork_delete_instance($id) {
     $DB->delete_records('peerwork_grades', ['peerworkid' => $id]);
     $DB->delete_records('peerwork', ['id' => $id]);
     $DB->delete_records('event', array('modulename' => 'peerwork', 'instance' => $peerwork->id));
-
     return true;
 }
 
@@ -729,3 +733,4 @@ function mod_peerwork_get_availability_status($data, $checkcapability = false, $
 
     return array($open, $warnings);
 }
+
