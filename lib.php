@@ -677,7 +677,7 @@ function mod_peerwork_core_calendar_provide_event_action(calendar_event $event,
     // Restore object from cached values in $cm, we only need id, duedate and fromdate.
     $customdata = $cm->customdata ?: [];
     $customdata['id'] = $cm->instance;
-    $data = (object)($customdata + ['duedate' => 0, 'fromdate' => 0]);
+    $data = (object)($customdata + ['duedate' => 0, 'fromdate' => 0, 'cmcourse' => $cm->course, 'userid' => $USER->id]);
     $assignmentpart = $DB->get_record('peerwork', array('id' => $customdata['id']), 'duedate');
 
     // Check whether the logged in user has a submission, should always be false for Instructors.
@@ -694,43 +694,36 @@ function mod_peerwork_core_calendar_provide_event_action(calendar_event $event,
     }
 
     // Check that the activity is open.
-    list($actionable, $warnings) = mod_peerwork_get_availability_status($data, true, context_module::instance($cm->id));
+    list($actionable, $warnings) = mod_peerwork_get_availability_status($data, $isinstructor);
 
     $identifier = ($isinstructor) ? 'allsubmissions' : 'addsubmission';
-    return $factory->create_instance(
-        get_string($identifier, 'peerwork'),
-        new \moodle_url('/mod/peerwork/view.php', array('id' => $cm->id)),
-        1,
-        $actionable
-    );
+    if ($actionable) {
+        return $factory->create_instance(
+            get_string($identifier, 'peerwork'),
+            new \moodle_url('/mod/peerwork/view.php', array('id' => $cm->id)),
+            1,
+            true
+        );
+    }
 }
 
 /**
  * Check if an activity is available for the current user.
  *
  * @param  stdClass  $data             Availability data
- * @param  boolean $checkcapability    Check the mod/peerwork:read cap
- * @param  stdClass  $context          Module context, required if $checkcapability is set to true
  * @return array                       status (available or not and possible warnings)
  */
-function mod_peerwork_get_availability_status($data, $checkcapability = false, $context = null) {
-    $open = true;
-    $warnings = array();
+function mod_peerwork_get_availability_status($data, $isinstructor = false) {
 
     $timenow = time();
-    if (!empty($data->fromdate) && $data->duedate > $timenow) {
-        $open = false;
-        $warnings['notopenyet'] = userdate($data->fromdate);
-    }
-    if (!empty($data->duedate) && $timenow > $data->duedate) {
-        $open = false;
-        $warnings['expired'] = userdate($data->duedate);
+    if ($timenow < $data->fromdate && $timenow > $data->duedate) {
+        return [false, []];
     }
 
-    if ($checkcapability && !empty($context) && has_capability('mod/peerwork:view', $context)) {
-        return array(true, $warnings);
+    $singlegroup = peerwork_get_mygroup($data->cmcourse, $data->userid, $groupingid = 0, false);
+    if ($isinstructor || $singlegroup) {
+        return [true, []];
     }
 
-    return array($open, $warnings);
+    return [false, []];
 }
-
