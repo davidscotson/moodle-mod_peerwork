@@ -36,6 +36,7 @@ $string['allmemberssubmitted'] = 'All group members submitted.';
 $string['allowlatesubmissions'] = 'Allow late submissions';
 $string['allowlatesubmissions_help'] = 'If enabled, submissions will still be allowed after the due date.<br />
 <strong>Note:</strong> Once the group grade has been saved and the final grades calculated, the student\'s submissions will become uneditable or locked. This is the stop tampering of the final grade by students amending their peer grades.';
+$string['allsubmissions'] = 'All submissions';
 $string['assessment'] = 'assessment';
 $string['assessmentalreadygraded'] = 'Assessment already graded.';
 $string['assessmentclosedfor'] = 'Assessment closed for: {$a}';
