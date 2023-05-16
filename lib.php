@@ -81,6 +81,24 @@ function peerwork_add_instance(stdClass $peerwork, mod_peerwork_mod_form $mform 
     // Now save all the criteria.
     $pac = new mod_peerwork_criteria($peerwork->id);
     $pac->update_instance($peerwork);
+    
+    //Add to calendar.
+    if ($peerwork->duedate) {
+        $event = new stdClass();
+        $event->name        = $peerwork->name;
+        $event->description = format_module_intro('peerwork', $peerwork, $peerwork->coursemodule, false);
+        $event->format      = FORMAT_HTML;
+        $event->courseid    = $peerwork->course;
+        $event->groupid     = 0;
+        $event->userid      = 0;
+        $event->modulename  = 'peerwork';
+        $event->instance    = $peerwork->id;
+        $event->eventtype   = 'due';
+        $event->timestart   = $peerwork->duedate;
+        $event->timeduration = 0;
+
+        calendar_event::create($event);
+    }
 
     peerwork_grade_item_update($peerwork);
 
@@ -122,6 +140,39 @@ function peerwork_update_instance(stdClass $peerwork, mod_peerwork_mod_form $mfo
     // Now save all the criteria.
     $pac = new mod_peerwork_criteria($peerwork->id);
     $return2 = $pac->update_instance($peerwork);
+
+    //Update calendar.
+    if ($peerwork->duedate) {
+        $event = new stdClass();
+        
+        if ($event->id = $DB->get_field('event', 'id', array('modulename' => 'peerwork', 'instance' => $peerwork->id))) {
+
+            $event->name        = $peerwork->name;
+            $event->description = format_module_intro('peerwork', $peerwork, $peerwork->coursemodule, false);
+            $event->format      = FORMAT_HTML;
+            $event->timestart   = $peerwork->duedate;
+
+            $calendarevent = calendar_event::load($event->id);
+            $calendarevent->update($event);
+        } else {
+            $event = new stdClass();
+            $event->name        = $peerwork->name;
+            $event->description = format_module_intro('peerwork', $peerwork, $peerwork->coursemodule, false);
+            $event->format      = FORMAT_HTML;
+            $event->courseid    = $peerwork->course;
+            $event->groupid     = 0;
+            $event->userid      = 0;
+            $event->modulename  = 'peerwork';
+            $event->instance    = $peerwork->id;
+            $event->eventtype   = 'due';
+            $event->timestart   = $peerwork->duedate;
+            $event->timeduration = 0;
+
+            calendar_event::create($event);
+        }    
+    } else {
+        $DB->delete_records('event', array('modulename' => 'peerwork', 'instance' => $peerwork->id));
+    }
 
     // Update locking across activity.
     if ($prevlockediting != $peerwork->lockediting) {
@@ -172,6 +223,7 @@ function peerwork_delete_instance($id) {
     $DB->delete_records('peerwork_submission', ['peerworkid' => $id]);
     $DB->delete_records('peerwork_grades', ['peerworkid' => $id]);
     $DB->delete_records('peerwork', ['id' => $id]);
+    $DB->delete_records('event', array('modulename' => 'peerwork', 'instance' => $peerwork->id));
 
     return true;
 }
@@ -600,4 +652,80 @@ function peerwork_get_coursemodule_info($coursemodule) {
     }
 
     return $result;
+}
+
+/**
+ * This function receives a calendar event and returns the action associated with it, or null if there is none.
+ *
+ * This is used by block_myoverview in order to display the event appropriately. If null is returned then the event
+ * is not displayed on the block.
+ *
+ * @param calendar_event $event
+ * @param \core_calendar\action_factory $factory
+ * @return \core_calendar\local\event\entities\action_interface|null
+ */
+function mod_peerwork_core_calendar_provide_event_action(calendar_event $event,
+                                                                \core_calendar\action_factory $factory) {
+    global $DB, $USER;
+    $cm = get_fast_modinfo($event->courseid)->instances['peerwork'][$event->instance];
+    $isinstructor = (has_capability('mod/peerwork:grade', context_module::instance($cm->id)));
+
+    // Restore object from cached values in $cm, we only need id, duedate and fromdate.
+    $customdata = $cm->customdata ?: [];
+    $customdata['id'] = $cm->instance;
+    $data = (object)($customdata + ['duedate' => 0, 'fromdate' => 0]);
+    $assignmentpart = $DB->get_record('peerwork', array('id' => $customdata['id']), 'duedate');
+
+    // Check whether the logged in user has a submission, should always be false for Instructors.
+    $hassubmission = false;
+    if (!$isinstructor) {
+        $queryparams = array('userid' => $USER->id, 'peerworkid' => $customdata['id']);
+        $hassubmission = $DB->get_records('peerwork_submission', $queryparams);
+    }
+
+    if ((!empty($cm->customdata['duedate']) && $cm->customdata['duedate'] < time()) ||
+        (isset($assignmentpart->duedate) && $assignmentpart->duedate < time()) || !empty($hassubmission))  {
+        // The assignment has closed so the user can no longer submit anything.
+        return null;
+    }
+
+    // Check that the activity is open.
+    list($actionable, $warnings) = mod_peerwork_get_availability_status($data, true, context_module::instance($cm->id));
+
+    $identifier = ($isinstructor) ? 'allsubmissions' : 'addsubmission';
+    return $factory->create_instance(
+        get_string($identifier, 'peerwork'),
+        new \moodle_url('/mod/peerwork/view.php', array('id' => $cm->id)),
+        1,
+        $actionable
+    );
+}
+
+/**
+ * Check if an activity is available for the current user.
+ *
+ * @param  stdClass  $data             Availability data
+ * @param  boolean $checkcapability    Check the mod/peerwork:read cap
+ * @param  stdClass  $context          Module context, required if $checkcapability is set to true
+ * @return array                       status (available or not and possible warnings)
+ */
+function mod_peerwork_get_availability_status($data, $checkcapability = false, $context = null) {
+    $open = true;
+    $warnings = array();
+
+    $timenow = time();
+    if (!empty($data->fromdate) && $data->duedate > $timenow) {
+        $open = false;
+        $warnings['notopenyet'] = userdate($data->fromdate);
+    }
+    if (!empty($data->duedate) && $timenow > $data->duedate) {
+        $open = false;
+        $warnings['expired'] = userdate($data->duedate);
+    }
+
+    if ($checkcapability && !empty($context) && has_capability('mod/peerwork:view', $context)) {
+        return array(true, $warnings);
+    }
+
+    return array($open, $warnings);
 }
