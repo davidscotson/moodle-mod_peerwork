@@ -677,8 +677,9 @@ function mod_peerwork_core_calendar_provide_event_action(calendar_event $event,
     // Restore object from cached values in $cm, we only need id, duedate and fromdate.
     $customdata = $cm->customdata ?: [];
     $customdata['id'] = $cm->instance;
-    $data = (object)($customdata + ['duedate' => 0, 'fromdate' => 0, 'cmcourse' => $cm->course, 'userid' => $USER->id]);
-    $assignmentpart = $DB->get_record('peerwork', array('id' => $customdata['id']), 'duedate');
+    $peerwork = $DB->get_record('peerwork', array('id' => $customdata['id']), 'duedate,pwgroupingid');
+    $data = (object)($customdata + ['duedate' => 0, 'fromdate' => 0, 'cmcourse' => $cm->course,
+        'userid' => $USER->id, 'pwgroupingid' => $peerwork->pwgroupingid]);
 
     // Check whether the logged in user has a submission, should always be false for Instructors.
     $hassubmission = false;
@@ -688,7 +689,7 @@ function mod_peerwork_core_calendar_provide_event_action(calendar_event $event,
     }
 
     if ((!empty($cm->customdata['duedate']) && $cm->customdata['duedate'] < time()) ||
-        (isset($assignmentpart->duedate) && $assignmentpart->duedate < time()) || !empty($hassubmission))  {
+        (isset($peerwork->duedate) && $peerwork->duedate < time()) || !empty($hassubmission))  {
         // The assignment has closed so the user can no longer submit anything.
         return null;
     }
@@ -721,7 +722,7 @@ function mod_peerwork_get_availability_status($data, $isinstructor = false) {
     }
 
     $singlegroup = peerwork_get_mygroup($data->cmcourse, $data->userid, $groupingid = 0, false);
-    if ($isinstructor || $singlegroup) {
+    if ($isinstructor || $singlegroup || ($data->pwgroupingid && !$singlegroup)) {
         return [true, []];
     }
 
