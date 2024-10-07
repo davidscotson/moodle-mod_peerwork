@@ -32,11 +32,11 @@ $id = required_param('id', PARAM_INT);
 $groupid = required_param('groupid', PARAM_INT);
 
 $cm             = get_coursemodule_from_id('peerwork', $id, 0, false, MUST_EXIST);
-$course         = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-$peerwork       = $DB->get_record('peerwork', array('id' => $cm->instance), '*', MUST_EXIST);
-$submission     = $DB->get_record('peerwork_submission', array('peerworkid' => $peerwork->id, 'groupid' => $groupid));
+$course         = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+$peerwork       = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
+$submission     = $DB->get_record('peerwork_submission', ['peerworkid' => $peerwork->id, 'groupid' => $groupid]);
 $members        = groups_get_members($groupid);
-$group          = $DB->get_record('groups', array('id' => $groupid), '*', MUST_EXIST);
+$group          = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
 $status         = peerwork_get_status($peerwork, $group);
 
 // Print the standard page header and check access rights.
@@ -74,7 +74,7 @@ $draftitemid = file_get_submitted_draft_itemid('feedback_files');
 file_prepare_draft_area($draftitemid, $context->id, 'mod_peerwork', 'feedback_files', $group->id, $fileoptions);
 $data = [
     'paweighting' => $peerwork->paweighting,
-    'feedback_files' => $draftitemid
+    'feedback_files' => $draftitemid,
 ];
 
 // Load the submission data.
@@ -83,7 +83,7 @@ if ($submission && peerwork_was_submission_graded_from_status($status)) {
     $data['paweighting'] = $submission->paweighting;
     $data['feedback'] = [
         'text' => $submission->feedbacktext ?? '',
-        'format' => $submission->feedbackformat ?? FORMAT_HTML
+        'format' => $submission->feedbackformat ?? FORMAT_HTML,
     ];
 }
 
@@ -104,7 +104,7 @@ $mform = new mod_peerwork_details_form($PAGE->url->out(false), [
     'submission' => $submission,
     'members' => $members,
     'canunlock' => $canunlock,
-    'duedatenotpassed' => $duedatenotpassed
+    'duedatenotpassed' => $duedatenotpassed,
 ]);
 $data['groupname'] = $group->name;
 $data['status'] = $status->text;
@@ -186,7 +186,7 @@ if (peerwork_was_submission_graded_from_status($status)) {
             'overriddenweightedgrade' => $overriddenweightedgrade,
             'revisedgrade' => $localgrades[$member->id]->revisedgrade ?? null,
             'overridden' => $grade->overridden,
-            'locked' => $grade->locked
+            'locked' => $grade->locked,
         ];
     }
 } else if ($duedatenotpassed) {
@@ -210,7 +210,7 @@ if ($mform->is_cancelled()) {
         $grader->set_feedback($data->feedback['text'], $data->feedback['format'], $draftitemid);
         $grader->commit();
 
-        redirect(new moodle_url('details.php', array('id' => $id, 'groupid' => $groupid)),
+        redirect(new moodle_url('details.php', ['id' => $id, 'groupid' => $groupid]),
             get_string('gradesandfeedbacksaved', 'mod_peerwork'), null, \core\output\notification::NOTIFY_SUCCESS);
     }
 
@@ -221,11 +221,11 @@ if ($mform->is_cancelled()) {
 //
 // Form should now be setup to display, so do the output.
 //
-$params = array(
+$params = [
     'objectid' => $cm->id,
     'context' => $context,
-    'other' => array('groupid' => $group->id)
-);
+    'other' => ['groupid' => $group->id],
+];
 $event = \mod_peerwork\event\submission_grade_form_viewed::create($params);
 $event->trigger();
 

@@ -66,7 +66,7 @@ class mod_peerwork_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         // Adding the standard "name" field.
-        $mform->addElement('text', 'name', get_string('peerworkname', 'peerwork'), array('size' => '64'));
+        $mform->addElement('text', 'name', get_string('peerworkname', 'peerwork'), ['size' => '64']);
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -87,11 +87,11 @@ class mod_peerwork_mod_form extends moodleform_mod {
         // or adding more fieldsets ('header' elements) if needed for better logic.
         $mform->addElement('header', 'peerworkfieldset', get_string('peerworkfieldset', 'peerwork'));
 
-        $mform->addElement('date_time_selector', 'fromdate', get_string('fromdate', 'peerwork'), array('optional' => true));
+        $mform->addElement('date_time_selector', 'fromdate', get_string('fromdate', 'peerwork'), ['optional' => true]);
         $mform->setDefault('fromdate', time());
         $mform->addHelpButton('fromdate', 'fromdate', 'peerwork');
 
-        $mform->addElement('date_time_selector', 'duedate', get_string('duedate', 'peerwork'), array('optional' => true));
+        $mform->addElement('date_time_selector', 'duedate', get_string('duedate', 'peerwork'), ['optional' => true]);
         $mform->setDefault('duedate', time() + DAYSECS);
         $mform->addHelpButton('duedate', 'duedate', 'peerwork');
 
@@ -213,7 +213,7 @@ class mod_peerwork_mod_form extends moodleform_mod {
 
         $options = [
             MOD_PEERWORK_JUSTIFICATION_SUMMARY => get_string('justificationtype0', 'mod_peerwork'),
-            MOD_PEERWORK_JUSTIFICATION_CRITERIA => get_string('justificationtype1', 'mod_peerwork')
+            MOD_PEERWORK_JUSTIFICATION_CRITERIA => get_string('justificationtype1', 'mod_peerwork'),
         ];
         $mform->addElement('select', 'justificationtype', get_string('justificationtype', 'mod_peerwork'), $options);
         $mform->addHelpButton('justificationtype', 'justificationtype', 'peerwork');
@@ -240,14 +240,14 @@ class mod_peerwork_mod_form extends moodleform_mod {
         $editor = $mform->createElement('editor', 'critdesc', get_string('assessmentcriteria:description', 'mod_peerwork'),
             ['rows' => 4]);
         $repeatopts['critdesc'] = [
-            'helpbutton' => ['assessmentcriteria:description', 'mod_peerwork']
+            'helpbutton' => ['assessmentcriteria:description', 'mod_peerwork'],
         ];
 
         // Scale.
         $scale = $mform->createElement('select', 'critscale',
             get_string('assessmentcriteria:scoretype', 'mod_peerwork'), get_scales_menu($COURSE->id));
         $repeatopts['critscale'] = [
-            'helpbutton' => ['assessmentcriteria:scoretype', 'mod_peerwork']
+            'helpbutton' => ['assessmentcriteria:scoretype', 'mod_peerwork'],
         ];
 
         // Repeat stuff.
@@ -275,7 +275,7 @@ class mod_peerwork_mod_form extends moodleform_mod {
                             'critdesc[' . $i . ']',
                             [
                                 'text' => $text,
-                                'format' => FORMAT_HTML
+                                'format' => FORMAT_HTML,
                             ]
                         );
 
@@ -324,7 +324,7 @@ class mod_peerwork_mod_form extends moodleform_mod {
         foreach ($crits as $i => $crit) {
             $defaultvalues['critdesc'][$i] = [
                 'text' => $crit->description,
-                'format' => $crit->descriptionformat
+                'format' => $crit->descriptionformat,
             ];
 
             // Scales are saved as negative integers.

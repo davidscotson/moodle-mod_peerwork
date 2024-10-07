@@ -95,8 +95,8 @@ class mod_peerwork_observer {
                 'objectid' => $peerwork->id,
                 'other' => [
                     'error' => $e->getMessage(),
-                    'groupid' => $groupid
-                ]
+                    'groupid' => $groupid,
+                ],
             ];
 
             $newevent = \mod_peerwork\event\gradebookupdate_failed::create($params);
@@ -155,8 +155,8 @@ class mod_peerwork_observer {
                         'relateduserid' => $member->id,
                         'other' => [
                             'error' => $e->getMessage(),
-                            'groupid' => $groupid
-                        ]
+                            'groupid' => $groupid,
+                        ],
                     ];
 
                     $newevent = \mod_peerwork\event\gradebookupdate_failed::create($params);

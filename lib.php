@@ -81,8 +81,8 @@ function peerwork_add_instance(stdClass $peerwork, mod_peerwork_mod_form $mform 
     // Now save all the criteria.
     $pac = new mod_peerwork_criteria($peerwork->id);
     $pac->update_instance($peerwork);
-    
-    //Add to calendar.
+
+    // Add to calendar.
     if ($peerwork->duedate) {
         $event = new stdClass();
         $event->type = CALENDAR_EVENT_TYPE_ACTION;
@@ -143,11 +143,11 @@ function peerwork_update_instance(stdClass $peerwork, mod_peerwork_mod_form $mfo
     $pac = new mod_peerwork_criteria($peerwork->id);
     $return2 = $pac->update_instance($peerwork);
 
-    //Update calendar.
+    // Update calendar.
     if ($peerwork->duedate) {
         $event = new stdClass();
-        
-        if ($event->id = $DB->get_field('event', 'id', array('modulename' => 'peerwork', 'instance' => $peerwork->id))) {
+
+        if ($event->id = $DB->get_field('event', 'id', ['modulename' => 'peerwork', 'instance' => $peerwork->id])) {
             $event->type = CALENDAR_EVENT_TYPE_ACTION;
             $event->name        = $peerwork->name;
             $event->description = format_module_intro('peerwork', $peerwork, $peerwork->coursemodule, false);
@@ -174,9 +174,9 @@ function peerwork_update_instance(stdClass $peerwork, mod_peerwork_mod_form $mfo
             $event->timeduration = 0;
 
             calendar_event::create($event);
-        }    
+        }
     } else {
-        $DB->delete_records('event', array('modulename' => 'peerwork', 'instance' => $peerwork->id));
+        $DB->delete_records('event', ['modulename' => 'peerwork', 'instance' => $peerwork->id]);
     }
 
     // Update locking across activity.
@@ -228,7 +228,7 @@ function peerwork_delete_instance($id) {
     $DB->delete_records('peerwork_submission', ['peerworkid' => $id]);
     $DB->delete_records('peerwork_grades', ['peerworkid' => $id]);
     $DB->delete_records('peerwork', ['id' => $id]);
-    $DB->delete_records('event', array('modulename' => 'peerwork', 'instance' => $peerwork->id));
+    $DB->delete_records('event', ['modulename' => 'peerwork', 'instance' => $peerwork->id]);
     return true;
 }
 
@@ -312,7 +312,7 @@ function peerwork_cron() {
  * @return array
  */
 function peerwork_get_extra_capabilities() {
-    return array();
+    return [];
 }
 
 /**
@@ -339,7 +339,7 @@ function peerwork_grade_item_update(stdClass $peerwork, $grades = null) {
     global $CFG;
     require_once($CFG->libdir . '/gradelib.php');
 
-    $item = array();
+    $item = [];
     $item['itemname'] = clean_param($peerwork->name, PARAM_NOTAGS);
     $item['gradetype'] = GRADE_TYPE_VALUE;
     $item['grademax'] = 100;
@@ -407,7 +407,7 @@ function peerwork_update_grades(stdClass $peerwork, $userid = 0, $nullifnone = t
  * @return array of [(string)filearea] => (string)description
  */
 function peerwork_get_file_areas($course, $cm, $context) {
-    return array();
+    return [];
 }
 
 /**
@@ -445,7 +445,7 @@ function peerwork_get_file_info($browser, $areas, $course, $cm, $context, $filea
  * @param bool $forcedownload whether or not force download
  * @param array $options additional options affecting the file serving
  */
-function peerwork_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+function peerwork_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
     global $DB, $USER;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -460,7 +460,7 @@ function peerwork_pluginfile($course, $cm, $context, $filearea, $args, $forcedow
         return false;
     }
 
-    $peerwork = $DB->get_record('peerwork', array('id' => $cm->instance), '*', MUST_EXIST);
+    $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
     $groupingid = $peerwork->pwgroupingid;
     $itemid = (int)array_shift($args);
     $mygroup = peerwork_get_mygroup($course->id, $USER->id, $groupingid, false);
@@ -628,7 +628,7 @@ function mod_peerwork_get_completion_active_rule_descriptions($cm) {
 function peerwork_get_coursemodule_info($coursemodule) {
     global $DB;
 
-    $dbparams = array('id'=>$coursemodule->instance);
+    $dbparams = ['id' => $coursemodule->instance];
     $fields = 'id, name, intro, introformat, completiongradedpeers,
         duedate, fromdate';
     if (! $peerwork = $DB->get_record('peerwork', $dbparams, $fields)) {
@@ -677,14 +677,14 @@ function mod_peerwork_core_calendar_provide_event_action(calendar_event $event,
     // Restore object from cached values in $cm, we only need id, duedate and fromdate.
     $customdata = $cm->customdata ?: [];
     $customdata['id'] = $cm->instance;
-    $peerwork = $DB->get_record('peerwork', array('id' => $customdata['id']), 'duedate,pwgroupingid');
+    $peerwork = $DB->get_record('peerwork', ['id' => $customdata['id']], 'duedate,pwgroupingid');
     $data = (object)($customdata + ['duedate' => 0, 'fromdate' => 0, 'cmcourse' => $cm->course,
         'userid' => $USER->id, 'pwgroupingid' => $peerwork->pwgroupingid]);
 
     // Check whether the logged in user has a submission, should always be false for Instructors.
     $hassubmission = false;
     if (!$isinstructor) {
-        $queryparams = array('userid' => $USER->id, 'peerworkid' => $customdata['id']);
+        $queryparams = ['userid' => $USER->id, 'peerworkid' => $customdata['id']];
         $hassubmission = $DB->get_records('peerwork_submission', $queryparams);
     }
 
@@ -701,7 +701,7 @@ function mod_peerwork_core_calendar_provide_event_action(calendar_event $event,
     if ($actionable) {
         return $factory->create_instance(
             get_string($identifier, 'peerwork'),
-            new \moodle_url('/mod/peerwork/view.php', array('id' => $cm->id)),
+            new \moodle_url('/mod/peerwork/view.php', ['id' => $cm->id]),
             1,
             true
         );

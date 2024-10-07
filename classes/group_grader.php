@@ -113,15 +113,15 @@ class group_grader {
         peerwork_update_local_grades($this->peerwork, $group, $this->submission, array_keys($members), $this->revisedgrades);
 
         // Finally, trigger the event.
-        $params = array(
+        $params = [
             'objectid' => $submission->id,
             'context' => $this->context,
             'other' => [
                 'groupid' => $group->id,
                 'groupname' => $group->name,
-                'grade' => $submission->grade
-            ]
-        );
+                'grade' => $submission->grade,
+            ],
+        ];
         $event = \mod_peerwork\event\submission_graded::create($params);
         $event->add_record_snapshot('peerwork_submission', $submission);
         $event->trigger();
@@ -149,7 +149,7 @@ class group_grader {
         if (!$record) {
             $record = (object) [
                 'peerworkid' => $this->peerwork->id,
-                'groupid' => $this->groupid
+                'groupid' => $this->groupid,
             ];
         }
         return $record;

@@ -53,7 +53,7 @@ require_once($CFG->dirroot . '/mod/peerwork/locallib.php');
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\plugin\provider,
-    \core_privacy\local\request\core_userlist_provider  {
+    \core_privacy\local\request\core_userlist_provider {
 
     /**
      * Returns metadata.
@@ -61,7 +61,7 @@ class provider implements
      * @param collection $collection The initialised collection to add items to.
      * @return collection A listing of user data stored through this system.
      */
-    public static function get_metadata(collection $collection) : collection {
+    public static function get_metadata(collection $collection): collection {
 
         $collection->add_database_table('peerwork_submission', [
             'groupid' => 'privacy:metadata:submission:groupid',
@@ -93,7 +93,7 @@ class provider implements
         $collection->add_database_table('peerwork_justification', [
             'gradedby' => 'privacy:metadata:justification:gradedby',
             'gradefor' => 'privacy:metadata:justification:gradefor',
-            'justification' => 'privacy:metadata:justification:justification'
+            'justification' => 'privacy:metadata:justification:justification',
         ], 'privacy:metadata:justification');
 
         $collection->add_database_table('peerwork_grades', [
@@ -114,11 +114,11 @@ class provider implements
      * @param int $userid The user to search.
      * @return contextlist $contextlist The contextlist containing the list of contexts used in this plugin.
      */
-    public static function get_contexts_for_userid(int $userid) : contextlist {
+    public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
         $defaultparams = [
             'modulename' => 'peerwork',
-            'contextlevel' => CONTEXT_MODULE
+            'contextlevel' => CONTEXT_MODULE,
         ];
         $defaultsql = "SELECT ctx.id
                          FROM {course_modules} cm
@@ -277,7 +277,7 @@ class provider implements
                 $context = context_module::instance($peerworkidstocmids[$peerworkid]);
                 $path = [get_string('privacy:path:submission', 'mod_peerwork')];
                 writer::with_context($context)->export_data($path, (object) [
-                    'submissions' => $data
+                    'submissions' => $data,
                 ]);
             }
         );
@@ -351,14 +351,14 @@ class provider implements
                     'time_graded' => transform::datetime($record->timecreated),
                     'time_grade_updated' => transform::datetime($record->timemodified),
                     'time_grade_overridden' => transform::datetime($record->timeoverridden),
-                    'criterion' => format_text($record->c_desc, $record->c_descformat, ['context' => $context])
+                    'criterion' => format_text($record->c_desc, $record->c_descformat, ['context' => $context]),
                 ];
                 return $carry;
             },
             function($peerworkid, $data) use ($peerworkidstocmids) {
                 $context = context_module::instance($peerworkidstocmids[$peerworkid]);
                 writer::with_context($context)->export_data([get_string('privacy:path:peergrades', 'mod_peerwork')], (object) [
-                    'grades' => $data
+                    'grades' => $data,
                 ]);
             }
         );

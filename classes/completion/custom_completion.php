@@ -93,7 +93,7 @@ class custom_completion extends activity_custom_completion {
      */
     public static function get_defined_custom_rules(): array {
         return [
-            'completiongradedpeers'
+            'completiongradedpeers',
         ];
     }
 

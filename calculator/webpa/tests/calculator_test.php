@@ -53,7 +53,7 @@ class calculator_test extends \basic_testcase {
             'bob' => 0.29,
             'claire' => 0.21,
             'david' => 0.14,
-            'elaine' => 0.07
+            'elaine' => 0.07,
         ], array_map(function($a) {
             return round($a, 2);  // We must round because the data we were given is rounded.
         }, $fracs));
@@ -184,7 +184,7 @@ class calculator_test extends \basic_testcase {
             'bob' => 0.40,
             'claire' => 0.30,
             'david' => 0.20,
-            'elaine' => 0.10
+            'elaine' => 0.10,
         ], array_map(function($a) {
             return round($a, 2);  // We must round because the data we were given is rounded.
         }, $fracs));
@@ -221,7 +221,7 @@ class calculator_test extends \basic_testcase {
             'bob' => 0.29,
             'claire' => 0.21,
             'david' => 0.14,
-            'elaine' => 0.07
+            'elaine' => 0.07,
         ], array_map(function($a) {
             return round($a, 2);  // We must round because the data we were given is rounded.
         }, $fracs));
@@ -257,7 +257,7 @@ class calculator_test extends \basic_testcase {
             'alice' => 0.31,
             'bob' => 0.31,
             'claire' => 0.23,
-            'david' => 0.15
+            'david' => 0.15,
         ], array_map(function($a) {
             return round($a, 2);  // We must round because the data we were given is rounded.
         }, $fracs));
@@ -293,30 +293,30 @@ class calculator_test extends \basic_testcase {
                 'bob' => [1, 3],
                 'claire' => [3, 0],
                 'david' => [1, 1],
-                'elaine' => [1, 0]
+                'elaine' => [1, 0],
             ],
             'bob' => [
                 'alice' => [2, 1],
                 'bob' => [2, 3],
                 'claire' => [2, 1],
                 'david' => [1, 1],
-                'elaine' => [0, 0]
+                'elaine' => [0, 0],
             ],
             'claire' => [
                 'alice' => [2, 2],
                 'bob' => [2, 2],
                 'claire' => [2, 2],
                 'david' => [2, 2],
-                'elaine' => [2, 2]
+                'elaine' => [2, 2],
             ],
             'david' => [
                 'alice' => [2, 1],
                 'bob' => [3, 2],
                 'claire' => [2, 2],
                 'david' => [1, 2],
-                'elaine' => [1, 0]
+                'elaine' => [1, 0],
             ],
-            'elaine' => []
+            'elaine' => [],
         ];
     }
 
@@ -332,27 +332,27 @@ class calculator_test extends \basic_testcase {
                 'bob' => [1, 3],
                 'claire' => [2, 1],
                 'david' => [1, 1],
-                'elaine' => [1, 0]
+                'elaine' => [1, 0],
             ],
             'bob' => [
                 'alice' => [2, 1],
                 'claire' => [2, 1],
                 'david' => [1, 1],
-                'elaine' => [0, 0]
+                'elaine' => [0, 0],
             ],
             'claire' => [
                 'alice' => [2, 2],
                 'bob' => [2, 2],
                 'david' => [2, 2],
-                'elaine' => [2, 2]
+                'elaine' => [2, 2],
             ],
             'david' => [
                 'alice' => [2, 1],
                 'bob' => [3, 2],
                 'claire' => [2, 2],
-                'elaine' => [0, 0]
+                'elaine' => [0, 0],
             ],
-            'elaine' => []
+            'elaine' => [],
         ];
     }
 
@@ -368,27 +368,27 @@ class calculator_test extends \basic_testcase {
                 'bob' => [1, 3],
                 'claire' => [3, 0],
                 'david' => [1, 1],
-                'elaine' => [1, 0]
+                'elaine' => [1, 0],
             ],
             'bob' => [
                 'bob' => [2, 3],
                 'claire' => [2, 1],
                 'david' => [1, 1],
-                'elaine' => [0, 0]
+                'elaine' => [0, 0],
             ],
             'claire' => [
                 'bob' => [2, 2],
                 'claire' => [2, 2],
                 'david' => [2, 2],
-                'elaine' => [2, 2]
+                'elaine' => [2, 2],
             ],
             'david' => [
                 'bob' => [3, 2],
                 'claire' => [2, 2],
                 'david' => [1, 2],
-                'elaine' => [1, 0]
+                'elaine' => [1, 0],
             ],
-            'elaine' => []
+            'elaine' => [],
         ];
     }
 
@@ -405,12 +405,12 @@ class calculator_test extends \basic_testcase {
                 'bob' => [1, 3],
                 'claire' => [3, 0],
                 'david' => [1, 1],
-                'elaine' => [1, 0]
+                'elaine' => [1, 0],
             ],
             'bob' => [],
             'claire' => [],
             'david' => [],
-            'elaine' => []
+            'elaine' => [],
         ];
     }
 
@@ -426,27 +426,27 @@ class calculator_test extends \basic_testcase {
                 'alice' => [2, 2],
                 'bob' => [1, 3],
                 'claire' => [3, 0],
-                'david' => [1, 1]
+                'david' => [1, 1],
             ],
             'bob' => [
                 'alice' => [2, 1],
                 'bob' => [2, 3],
                 'claire' => [2, 1],
-                'david' => [1, 1]
+                'david' => [1, 1],
             ],
             'claire' => [
                 'alice' => [2, 2],
                 'bob' => [2, 2],
                 'claire' => [2, 2],
-                'david' => [2, 2]
+                'david' => [2, 2],
             ],
             'david' => [
                 'alice' => [2, 1],
                 'bob' => [3, 2],
                 'claire' => [2, 2],
-                'david' => [1, 2]
+                'david' => [1, 2],
             ],
-            'elaine' => []
+            'elaine' => [],
         ];
     }
 }
