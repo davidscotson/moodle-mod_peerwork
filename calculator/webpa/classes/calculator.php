@@ -24,8 +24,6 @@
  */
 namespace peerworkcalculator_webpa;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * WebPA calculator.
  *

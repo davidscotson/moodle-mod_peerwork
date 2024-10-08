@@ -24,8 +24,6 @@
  */
 namespace mod_peerwork\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Submission cleared event class.
  *

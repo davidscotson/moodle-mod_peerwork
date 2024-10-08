@@ -24,8 +24,6 @@
 
 namespace mod_peerwork\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The mod_peerwork assessable submitted event class.
  *

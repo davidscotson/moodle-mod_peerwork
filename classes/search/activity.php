@@ -25,8 +25,6 @@
 
 namespace mod_peerwork\search;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Search area for mod_peerwork activities.
  *
