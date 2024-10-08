@@ -107,4 +107,3 @@ Feature: Change the group members after grading
       | Grade item         | Grade |
       | Test peerwork name | 50.00 |
     And I log out
-

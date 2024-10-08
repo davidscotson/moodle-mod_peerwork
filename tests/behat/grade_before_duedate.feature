@@ -97,4 +97,3 @@ Feature: Grade a submission before the due date has passed
     And I follow "Peer Assessment"
     When I click on "Edit grade for group: Group 1" "link"
     Then I should not see "The due date has not passed. If you grade now then students will no longer be able to edit submissions."
-
