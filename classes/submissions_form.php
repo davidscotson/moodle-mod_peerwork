@@ -203,7 +203,7 @@ class mod_peerwork_submissions_form extends moodleform {
                     $attrs = [
                         'name' => $uniqueid,
                         'value' => $key,
-                        'title' => $srlabel
+                        'title' => $srlabel,
                     ];
 
                     if ($currentvalue == $key) {
@@ -240,7 +240,7 @@ class mod_peerwork_submissions_form extends moodleform {
                     $textareaattrs = [
                         'rows' => 2,
                         'style' => 'width: 100%',
-                        'placeholder' => get_string('justification', 'mod_peerwork')
+                        'placeholder' => get_string('justification', 'mod_peerwork'),
                     ];
 
                     $textarea = $mform->addElement(
@@ -396,7 +396,7 @@ class mod_peerwork_submissions_form extends moodleform {
                 $justifications = $DB->get_records('peerwork_justification', [
                     'peerworkid' => $peerworkid,
                     'gradedby' => $USER->id,
-                    'criteriaid' => $id
+                    'criteriaid' => $id,
                 ]);
 
                 foreach ($justifications as $j) {
@@ -410,7 +410,7 @@ class mod_peerwork_submissions_form extends moodleform {
             $justifications = $DB->get_records('peerwork_justification', [
                 'peerworkid' => $peerworkid,
                 'gradedby' => $USER->id,
-                'criteriaid' => 0
+                'criteriaid' => 0,
             ]);
 
             foreach ($justifications as $j) {
@@ -443,7 +443,7 @@ class mod_peerwork_submissions_form extends moodleform {
                 if ($justificationtype == MOD_PEERWORK_JUSTIFICATION_CRITERIA) {
                     // Criteria justifications.
                     foreach ($criteria as $id => $criterion) {
-                        $text = isset($data['justification_' . $id ][$peer->id]) ? $data['justification_' . $id][$peer->id] : '';
+                        $text = isset($data['justification_' . $id][$peer->id]) ? $data['justification_' . $id][$peer->id] : '';
                         $justification = trim($text);
                         $length = core_text::strlen($justification);
 

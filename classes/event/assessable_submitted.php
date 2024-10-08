@@ -63,7 +63,7 @@ class assessable_submitted extends \core\event\base {
     public function get_url() {
         return new \moodle_url(
             '/mod/peerwork/view.php',
-            array('id' => $this->contextinstanceid));
+            ['id' => $this->contextinstanceid]);
     }
 
     /**

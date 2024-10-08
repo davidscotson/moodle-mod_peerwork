@@ -42,9 +42,9 @@ abstract class peerwork_plugin {
     private $type = '';
     /** @var string $error error message */
     private $error = '';
-    /** @var boolean|null $enabledcache Cached lookup of the is_enabled function */
+    /** @var bool|null $enabledcache Cached lookup of the is_enabled function */
     private $enabledcache = null;
-    /** @var boolean|null $enabledcache Cached lookup of the is_visible function */
+    /** @var bool|null $enabledcache Cached lookup of the is_visible function */
     private $visiblecache = null;
 
     /**
@@ -284,7 +284,7 @@ abstract class peerwork_plugin {
                 'peerwork' => $this->peerwork->id,
                 'subtype' => $this->get_subtype(),
                 'plugin' => $this->get_type(),
-                'name' => $name
+                'name' => $name,
             ];
             $current = $DB->get_record('peerwork_plugin_config', $dbparams, '*', IGNORE_MISSING);
 
@@ -321,7 +321,7 @@ abstract class peerwork_plugin {
                     'peerwork' => $this->peerwork->id,
                     'subtype' => $this->get_subtype(),
                     'plugin' => $this->get_type(),
-                    'name' => $setting
+                    'name' => $setting,
                 ];
                 $result = $DB->get_record('peerwork_plugin_config', $dbparams, '*', IGNORE_MISSING);
                 if ($result) {
@@ -337,7 +337,7 @@ abstract class peerwork_plugin {
             $dbparams = [
                 'peerwork' => $this->peerwork->id,
                 'subtype' => $this->get_subtype(),
-                'plugin' => $this->get_type()
+                'plugin' => $this->get_type(),
             ];
             $results = $DB->get_records('peerwork_plugin_config', $dbparams);
 
@@ -400,6 +400,6 @@ abstract class peerwork_plugin {
      * @since Moodle 3.2
      */
     public function get_config_for_external() {
-        return array();
+        return [];
     }
 }

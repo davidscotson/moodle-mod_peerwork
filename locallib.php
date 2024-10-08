@@ -136,20 +136,20 @@ function peerwork_get_status($peerwork, $group, $submission = null) {
 
     if ($submission && $submission->released) {
         $status->code = PEERWORK_STATUS_RELEASED;
-        $user = $DB->get_record('user', array('id' => $submission->releasedby));
+        $user = $DB->get_record('user', ['id' => $submission->releasedby]);
         $status->text = get_string('releasedbyon', 'mod_peerwork', [
             'name' => fullname($user),
-            'date' => userdate($submission->released)
+            'date' => userdate($submission->released),
         ]);
         return $status;
     }
 
     if ($submission && $submission->timegraded) {
         $status->code = PEERWORK_STATUS_GRADED;
-        $user = $DB->get_record('user', array('id' => $submission->gradedby));
+        $user = $DB->get_record('user', ['id' => $submission->gradedby]);
         $status->text = get_string('gradedbyon', 'mod_peerwork', [
             'name' => fullname($user),
-            'date' => userdate($submission->timegraded)
+            'date' => userdate($submission->timegraded),
         ]);
         return $status;
     }
@@ -173,20 +173,20 @@ function peerwork_get_status($peerwork, $group, $submission = null) {
         $modified = get_string(
             'lasteditedon', 'mod_peerwork',
             [
-                'date' => userdate($submission->timecreated)
+                'date' => userdate($submission->timecreated),
             ]
         );
     }
 
     if ($duedate == PEERWORK_DUEDATE_PASSED) {
-        $user = $DB->get_record('user', array('id' => $submission->userid));
+        $user = $DB->get_record('user', ['id' => $submission->userid]);
         $status->code = PEERWORK_STATUS_SUBMITTED;
         $status->text =
             get_string(
                 'firstsubmittedbyon', 'mod_peerwork',
                 [
                     'name' => fullname($user),
-                    'date' => userdate($submission->timecreated)
+                    'date' => userdate($submission->timecreated),
                 ]
             ) . $modified .
             ' ' .
@@ -201,7 +201,7 @@ function peerwork_get_status($peerwork, $group, $submission = null) {
                 array_map(function($peer) {
                     return get_string('studentondate', 'mod_peerwork', [
                         'fullname' => fullname($peer),
-                        'date' => userdate($peer->timegraded, get_string('strftimedatetimeshort', 'core_langconfig'))
+                        'date' => userdate($peer->timegraded, get_string('strftimedatetimeshort', 'core_langconfig')),
                     ]);
                 }, $latepeers)
             )), ['class' => 'submitted-past-due-date']);
@@ -210,14 +210,14 @@ function peerwork_get_status($peerwork, $group, $submission = null) {
         return $status;
 
     } else {
-        $user = $DB->get_record('user', array('id' => $submission->userid));
+        $user = $DB->get_record('user', ['id' => $submission->userid]);
         $status->code = PEERWORK_STATUS_SUBMITTED;
         $status->text =
             get_string(
                 'firstsubmittedbyon', 'mod_peerwork',
                 [
                     'name' => fullname($user),
-                    'date' => userdate($submission->timecreated)
+                    'date' => userdate($submission->timecreated),
                 ]
             ) . $modified;
         return $status;
@@ -287,7 +287,7 @@ function peerwork_get_justifications_received($peerworkid, $groupid, $userid) {
     $justifications = $DB->get_records('peerwork_justification', [
         'peerworkid' => $peerworkid,
         'groupid' => $groupid,
-        'gradefor' => $userid
+        'gradefor' => $userid,
     ]);
     return array_reduce($justifications, function($carry, $row) {
         $carry[$row->criteriaid][$row->gradedby] = $row;
@@ -308,7 +308,7 @@ function peerwork_get_peer_grades_received($peerworkid, $groupid, $userid) {
     $peergrades = $DB->get_records('peerwork_peers', [
         'peerwork' => $peerworkid,
         'groupid' => $groupid,
-        'gradefor' => $userid
+        'gradefor' => $userid,
     ]);
     return array_reduce($peergrades, function($carry, $row) {
         if (!isset($carry[$row->criteriaid])) {
@@ -433,8 +433,8 @@ function peerwork_is_open($peerwork, $groupid = 0) {
         return $status;
     }
 
-    $course = $DB->get_record('course', array('id' => $peerwork->course), '*', MUST_EXIST);
-    $group = $DB->get_record('groups', array('id' => $groupid), '*', MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $peerwork->course], '*', MUST_EXIST);
+    $group = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
 
     // Is it already graded?
     $pstatus = peerwork_get_status($peerwork, $group);
@@ -476,7 +476,7 @@ function peerwork_get_peer_grades($peerwork, $group, $membersgradeable = null, $
     $return = new stdClass();
     $calculator = calculator_instance($peerwork);
 
-    $peers = $DB->get_records('peerwork_peers', array('peerwork' => $peerwork->id, 'groupid' => $group->id));
+    $peers = $DB->get_records('peerwork_peers', ['peerwork' => $peerwork->id, 'groupid' => $group->id]);
     $grades = [];
     $overrides = [];
     $feedback = [];
@@ -578,7 +578,7 @@ function peerwork_get_pa_result($peerwork, $group, $submission = null, $beforeov
     if (!$submission) {
         $submission = $DB->get_record('peerwork_submission', [
             'peerworkid' => $peerwork->id,
-            'groupid' => $group->id
+            'groupid' => $group->id,
         ]);
     }
 
@@ -616,7 +616,7 @@ function peerwork_get_pa_result($peerwork, $group, $submission = null, $beforeov
  * @return string[] Array of formatted HTML strings.
  */
 function peerwork_submission_files($context, $group) {
-    $allfiles = array();
+    $allfiles = [];
     $fs = get_file_storage();
     if ($files = $fs->get_area_files($context->id, 'mod_peerwork', 'submission', $group->id, 'sortorder', false)) {
         foreach ($files as $file) {
@@ -637,7 +637,7 @@ function peerwork_submission_files($context, $group) {
  * @return string[]
  */
 function peerwork_feedback_files($context, $group) {
-    $allfiles = array();
+    $allfiles = [];
     $fs = get_file_storage();
     if ($files = $fs->get_area_files($context->id, 'mod_peerwork', 'feedback_files', $group->id, 'sortorder', false)) {
         foreach ($files as $file) {
@@ -661,11 +661,11 @@ function peerwork_grade_by_user($peerwork, $user, $membersgradeable) {
     global $DB;
 
     $data = new stdClass();
-    $data->grade = array();
-    $data->feedback = array();
+    $data->grade = [];
+    $data->feedback = [];
 
-    $mygrades = $DB->get_records('peerwork_peers', array('peerwork' => $peerwork->id,
-        'gradedby' => $user->id), '', 'id,criteriaid,gradefor,feedback,grade');
+    $mygrades = $DB->get_records('peerwork_peers', ['peerwork' => $peerwork->id,
+        'gradedby' => $user->id], '', 'id,criteriaid,gradefor,feedback,grade');
 
     foreach ($mygrades as $grade) {
         $peerid = $grade->gradefor;
@@ -700,8 +700,8 @@ function peerwork_grades_by_user($peerwork, $user, $membersgradeable, $beforeove
     $data = new stdClass();
     $data->grade = [];
 
-    $mygrades = $DB->get_records('peerwork_peers', array('peerwork' => $peerwork->id,
-        'gradedby' => $user->id), '', 'id,criteriaid,gradefor,grade,peergrade');
+    $mygrades = $DB->get_records('peerwork_peers', ['peerwork' => $peerwork->id,
+        'gradedby' => $user->id], '', 'id,criteriaid,gradefor,grade,peergrade');
 
     foreach ($mygrades as $grade) {
         $peerid = $grade->gradefor;
@@ -736,8 +736,8 @@ function peerwork_grades_overrides_by_user($peerwork, $user, $membersgradeable) 
     $data->grade = [];
     $data->feedback = [];
 
-    $mygrades = $DB->get_records('peerwork_peers', array('peerwork' => $peerwork->id,
-        'gradedby' => $user->id), '', 'id,criteriaid,gradefor,grade,peergrade,comments');
+    $mygrades = $DB->get_records('peerwork_peers', ['peerwork' => $peerwork->id,
+        'gradedby' => $user->id], '', 'id,criteriaid,gradefor,grade,peergrade,comments');
 
     foreach ($mygrades as $grade) {
         $peerid = $grade->gradefor;
@@ -745,7 +745,7 @@ function peerwork_grades_overrides_by_user($peerwork, $user, $membersgradeable) 
         $data->grade[$peerid][$criteriaid] = [
             'grade' => $grade->grade,
             'peergrade' => $grade->peergrade,
-            'comments' => $grade->comments
+            'comments' => $grade->comments,
         ];
     }
 
@@ -759,8 +759,8 @@ function peerwork_grades_overrides_by_user($peerwork, $user, $membersgradeable) 
  * @return array
  */
 function peerwork_get_fileoptions($peerwork) {
-    return array('mainfile' => '', 'subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => $peerwork->maxfiles,
-        'accepted_types' => '*', 'return_types' => null);
+    return ['mainfile' => '', 'subdirs' => 0, 'maxbytes' => -1, 'maxfiles' => $peerwork->maxfiles,
+        'accepted_types' => '*', 'return_types' => null];
 }
 
 /**
@@ -775,8 +775,8 @@ function peerwork_outstanding($peerwork, $group) {
 
     $members = groups_get_members($group->id);
     foreach ($members as $k => $member) {
-        if ($DB->get_record('peerwork_peers', array('peerwork' => $peerwork->id, 'groupid' => $group->id,
-            'gradedby' => $member->id), 'id', IGNORE_MULTIPLE)) {
+        if ($DB->get_record('peerwork_peers', ['peerwork' => $peerwork->id, 'groupid' => $group->id,
+            'gradedby' => $member->id], 'id', IGNORE_MULTIPLE)) {
             unset($members[$k]);
         }
 
@@ -793,7 +793,7 @@ function peerwork_outstanding($peerwork, $group) {
 function peerwork_teachers($context) {
     global $CFG;
 
-    $contacts = array();
+    $contacts = [];
     if (empty($CFG->coursecontact)) {
         return $contacts;
     }
@@ -817,7 +817,7 @@ function peerwork_get_user_local_grade($peerworkid, $submissionid, $userid) {
     $record = $DB->get_record('peerwork_grades', [
         'peerworkid' => $peerworkid,
         'submissionid' => $submissionid,
-        'userid' => $userid
+        'userid' => $userid,
     ]);
 
     if (!$record) {
@@ -838,7 +838,7 @@ function peerwork_get_local_grades($peerworkid, $submissionid) {
     global $DB;
     $records = $DB->get_records('peerwork_grades', [
         'peerworkid' => $peerworkid,
-        'submissionid' => $submissionid
+        'submissionid' => $submissionid,
     ], '', '*');
     $userids = array_map(function($record) {
         return $record->userid;
@@ -974,14 +974,14 @@ function peerwork_save($peerwork, $submission, $group, $course, $cm, $context, $
 
             $peer->id = $DB->insert_record('peerwork_peers', $peer, true);
 
-            $params = array(
+            $params = [
                 'objectid' => $peer->id,
                 'context' => $context,
                 'relateduserid' => $member->id,
-                'other' => array(
+                'other' => [
                     'grade' => $peer->grade,
-                )
-            );
+                ],
+            ];
 
             $event = \mod_peerwork\event\peer_grade_created::create($params);
             $event->add_record_snapshot('peerwork_peers', $peer);
@@ -1005,7 +1005,7 @@ function peerwork_save($peerwork, $submission, $group, $course, $cm, $context, $
                 'groupid' => $group->id,
                 'gradefor' => $member->id,
                 'gradedby' => $USER->id,
-                'criteriaid' => 0
+                'criteriaid' => 0,
             ];
             if ($justificationtype == MOD_PEERWORK_JUSTIFICATION_SUMMARY) {
                 $record = $DB->get_record('peerwork_justification', $params);
@@ -1083,7 +1083,7 @@ function peerwork_peer_override($peerworkid, $gradedby, $groupid, $overridden, $
                 'peerwork' => $peerworkid,
                 'groupid' => $groupid,
                 'gradedby' => $gradedby,
-                'criteriaid' => $criterion->id
+                'criteriaid' => $criterion->id,
             ],
             '',
             'gradefor, grade, peergrade, comments, id, peerwork, criteriaid,
@@ -1116,17 +1116,17 @@ function peerwork_peer_override($peerworkid, $gradedby, $groupid, $overridden, $
 
                     $peergrade = $peerworkpeer->peergrade ? $peerworkpeer->peergrade : get_string('none');
 
-                    $params = array(
+                    $params = [
                         'objectid' => $peerworkid,
                         'context' => $context,
                         'relateduserid' => $gradedby,
-                        'other' => array(
+                        'other' => [
                             'gradefor' => $peerworkpeer->gradefor,
                             'grade' => $peerworkpeer->grade,
                             'peergrade' => $peergrade,
-                            'comments' => $peerworkpeer->comments
-                        )
-                    );
+                            'comments' => $peerworkpeer->comments,
+                        ],
+                    ];
 
                     $event = \mod_peerwork\event\peer_grade_overridden::create($params);
                     $event->add_record_snapshot('peerwork_peers', $peerworkpeer);
@@ -1151,17 +1151,17 @@ function peerwork_peer_override($peerworkid, $gradedby, $groupid, $overridden, $
 
                 $peerworkpeer->id = $DB->insert_record('peerwork_peers', $peerworkpeer, true);
 
-                $params = array(
+                $params = [
                     'objectid' => $peerworkid,
                     'context' => $context,
                     'relateduserid' => $gradedby,
-                    'other' => array(
+                    'other' => [
                         'gradefor' => $peerworkpeer->gradefor,
                         'grade' => $peerworkpeer->grade,
                         'peergrade' => get_string('none', 'mod_peerwork'),
-                        'comments' => $peerworkpeer->comments
-                    )
-                );
+                        'comments' => $peerworkpeer->comments,
+                    ],
+                ];
 
                 $event = \mod_peerwork\event\peer_grade_overridden::create($params);
                 $event->add_record_snapshot('peerwork_peers', $peerworkpeer);
@@ -1204,11 +1204,11 @@ function mod_peerwork_save_submission($peerwork, $submission, $group, $context, 
 
         $submission->id = $DB->insert_record('peerwork_submission', $submission);
 
-        $params = array(
+        $params = [
             'objectid' => $submission->id,
             'context' => $context,
-            'other' => array('groupid' => $group->id)
-        );
+            'other' => ['groupid' => $group->id],
+        ];
 
         $event = \mod_peerwork\event\submission_created::create($params);
         $event->trigger();
@@ -1219,11 +1219,11 @@ function mod_peerwork_save_submission($peerwork, $submission, $group, $context, 
         $submission->locked = $peerwork->lockediting;
         $DB->update_record('peerwork_submission', $submission);
 
-        $params = array(
+        $params = [
             'objectid' => $submission->id,
             'context' => $context,
-            'other' => array('groupid' => $group->id)
-        );
+            'other' => ['groupid' => $group->id],
+        ];
 
         $event = \mod_peerwork\event\submission_updated::create($params);
         $event->add_record_snapshot('peerwork_submission', $submission);
@@ -1244,14 +1244,14 @@ function mod_peerwork_save_submission($peerwork, $submission, $group, $context, 
 
     if (!$skipfile) {
         // Get all contenthashes being submitted.
-        $newhashes = array();
+        $newhashes = [];
         foreach ($draftfiles as $file) {
             $newhashes[$file->get_contenthash()] = $file->get_contenthash();
         }
 
         // Get all contenthashes that are already submitted.
         $files = $fs->get_area_files($context->id, 'mod_peerwork', 'submission', $group->id, 'sortorder', false);
-        $oldhashes = array();
+        $oldhashes = [];
         foreach ($files as $file) {
             $oldhashes[$file->get_contenthash()] = $file->get_contenthash();
         }
@@ -1260,26 +1260,26 @@ function mod_peerwork_save_submission($peerwork, $submission, $group, $context, 
         $deletedhashes = array_diff($oldhashes, $newhashes);
 
         if ($deletedhashes) {
-            $params = array(
+            $params = [
                 'objectid' => $submission->id,
                 'context' => $context,
-                'other' => array(
-                    'deletedlist' => $deletedhashes
-                )
-            );
+                'other' => [
+                    'deletedlist' => $deletedhashes,
+                ],
+            ];
 
             $event = \mod_peerwork\event\submission_files_deleted::create($params);
             $event->trigger();
         }
 
         if ($addedhashes) {
-            $params = array(
+            $params = [
                 'objectid' => $submission->id,
                 'context' => $context,
-                'other' => array(
-                    'filelist' => $addedhashes
-                )
-            );
+                'other' => [
+                    'filelist' => $addedhashes,
+                ],
+            ];
 
             $event = \mod_peerwork\event\submission_files_uploaded::create($params);
             $event->trigger();
@@ -1320,7 +1320,7 @@ function mod_peerwork_mail_confirmation_submission($course, $submission, $draftf
     $a = new stdClass();
     $a->time = userdate(time());
 
-    $files = array();
+    $files = [];
     foreach ($draftfiles as $draftfile) {
         $files[] = $draftfile->get_filename();
     }
@@ -1353,7 +1353,7 @@ function mod_peerwork_clear_submissions($peerwork, $context, $groupid = 0) {
         $sql = 'peerworkid = :peerworkid AND groupid = :groupid AND COALESCE(timegraded, 0) = 0';
         $submissions = $DB->get_records_select('peerwork_submission', $sql, [
             'peerworkid' => $peerwork->id,
-            'groupid' => $groupid
+            'groupid' => $groupid,
         ]);
     } else {
         $sql = 'peerworkid = :peerworkid AND COALESCE(timegraded, 0) = 0 AND released = 0';
@@ -1379,8 +1379,8 @@ function mod_peerwork_clear_submissions($peerwork, $context, $groupid = 0) {
             'objectid' => $id,
             'context' => $context,
             'other' => [
-                'groupid' => $groupid
-            ]
+                'groupid' => $groupid,
+            ],
         ];
         $event = \mod_peerwork\event\submission_cleared::create($params);
         $event->add_record_snapshot('peerwork_submission', $submission);
@@ -1417,7 +1417,7 @@ function mod_peerwork_get_late_peers($peerwork, $submission) {
     $params = [
         'groupid' => $submission->groupid,
         'peerworkid' => $peerwork->id,
-        'duedate' => !empty($peerwork->duedate) ? $peerwork->duedate : time() + DAYSECS * 99
+        'duedate' => !empty($peerwork->duedate) ? $peerwork->duedate : time() + DAYSECS * 99,
     ];
 
     return array_reduce($DB->get_records_sql($sql, $params), function($carry, $record) {
@@ -1503,7 +1503,7 @@ function mod_peerwork_get_locked_peers($peerwork, $gradedby) {
     $sql = 'peerwork = :peerworkid AND gradedby = :gradedby AND locked = 1';
     return $DB->get_fieldset_select('peerwork_peers', 'DISTINCT gradefor', $sql, [
         'peerworkid' => $peerwork->id,
-        'gradedby' => $gradedby
+        'gradedby' => $gradedby,
     ]);
 }
 

@@ -36,8 +36,8 @@ class mod_peerwork_details_form extends moodleform {
     protected $pageinitialised = false;
 
     /** @var array File manager options. */
-    public static $fileoptions = array('mainfile' => '', 'subdirs' => 1, 'maxbytes' => -1, 'maxfiles' => -1,
-        'accepted_types' => '*', 'return_types' => null);
+    public static $fileoptions = ['mainfile' => '', 'subdirs' => 1, 'maxbytes' => -1, 'maxfiles' => -1,
+        'accepted_types' => '*', 'return_types' => null];
 
     /**
      * Define this form - called from the parent constructor.
@@ -72,7 +72,7 @@ class mod_peerwork_details_form extends moodleform {
                 new pix_icon('t/locked', get_string('editinglocked', 'mod_peerwork'), 'core'),
                 null, [
                     'id' => 'unlock_submission_btn',
-                    'data-submissionid' => $submission->id
+                    'data-submissionid' => $submission->id,
                 ]
             );
         }
@@ -98,7 +98,7 @@ class mod_peerwork_details_form extends moodleform {
                         $justif = isset($theirjustifs[$gradefor->id]) ? $theirjustifs[$gradefor->id]->justification : null;
                         $rows[] = new html_table_row([
                             fullname($gradefor),
-                            ($justif ? s($justif) : html_writer::tag('em', get_string('nonegiven', 'mod_peerwork')))
+                            ($justif ? s($justif) : html_writer::tag('em', get_string('nonegiven', 'mod_peerwork'))),
                         ]);
                     }
 
@@ -263,12 +263,12 @@ class mod_peerwork_details_form extends moodleform {
             $calculatedtotal = new html_table_cell(format_float($totalcalculated, 2));
             $calculatedtotal->attributes = [
                 'class' => 'total-calculated-grade',
-                'data-total' => $totalcalculated
+                'data-total' => $totalcalculated,
             ];
             $finalweightedtotal = new html_table_cell(format_float($totalfinalweighted, 2));
             $finalweightedtotal->attributes = [
                 'class' => 'total-final-weighted-grade',
-                'data-total' => $totalfinalweighted
+                'data-total' => $totalfinalweighted,
             ];
             $revisedtotal = new html_table_cell();
             $revisedtotal->attributes['class'] = 'total-revised-grade';

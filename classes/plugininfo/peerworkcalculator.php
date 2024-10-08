@@ -58,7 +58,7 @@ class peerworkcalculator extends base {
             'peerwork_plugin_config',
             [
                 'plugin' => $this->name,
-                'subtype' => 'peerworkcalculator'
+                'subtype' => 'peerworkcalculator',
             ]
         );
 

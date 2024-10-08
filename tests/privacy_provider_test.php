@@ -442,7 +442,7 @@ class privacy_provider_test extends \advanced_testcase {
         }
 
         $contextlist = new approved_contextlist($u1, 'mod_peerwork', [
-            \context_module::instance($p1->cmid)->id
+            \context_module::instance($p1->cmid)->id,
         ]);
         provider::delete_data_for_user($contextlist);
 
@@ -651,7 +651,7 @@ class privacy_provider_test extends \advanced_testcase {
                 'peergrade' => 2,
                 'overriddenby' => $u9->id,
                 'comments' => 'some words',
-                'timeoverridden' => 1234986
+                'timeoverridden' => 1234986,
         ]);
         $g2 = $pg->create_peer_grade(['peerworkid' => $p1->id, 'criteriaid' => $crit1->id, 'groupid' => $g1->id,
             'gradefor' => $u2->id, 'gradedby' => $u1->id, 'grade' => 4, 'timecreated' => 2234986]);

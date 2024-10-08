@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  * @author     Kevin Moore <ac4581@coventry.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_peerwork_criteria  {
+class mod_peerwork_criteria {
 
     /** @var string The table name. */
     protected static $tablename = 'peerwork_criteria';

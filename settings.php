@@ -173,7 +173,7 @@ if ($ADMIN->fulltree) {
         0,
         [
             0 => get_string('justificationtype0', 'mod_peerwork'),
-            1 => get_string('justificationtype1', 'mod_peerwork')
+            1 => get_string('justificationtype1', 'mod_peerwork'),
         ]
     );
     $setting->set_locked_flag_options(admin_setting_flag::ENABLED, false);

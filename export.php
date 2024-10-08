@@ -51,7 +51,7 @@ if (empty($groupids)) {
 
 $context = $cm->context;
 $params = [
-    'context' => $context
+    'context' => $context,
 ];
 $event = \mod_peerwork\event\submissions_exported::create($params);
 $event->trigger();

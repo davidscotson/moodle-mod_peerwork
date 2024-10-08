@@ -58,7 +58,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
         $row = new html_table_row();
         $cell1 = new html_table_cell(get_string('group'));
         $cell2 = new html_table_cell($group->name);
-        $row->cells = array($cell1, $cell2);
+        $row->cells = [$cell1, $cell2];
         $t->data[] = $row;
 
         $row = new html_table_row();
@@ -77,7 +77,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
         }
 
         $cell2 = new html_table_cell($text);
-        $row->cells = array($cell1, $cell2);
+        $row->cells = [$cell1, $cell2];
         $t->data[] = $row;
 
         if ($peerwork->duedate) {
@@ -85,7 +85,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
             $cell1 = new html_table_cell(get_string('duedate', 'mod_peerwork'));
             $cell2 = new html_table_cell(userdate($peerwork->duedate));
 
-            $row->cells = array($cell1, $cell2);
+            $row->cells = [$cell1, $cell2];
             $t->data[] = $row;
 
             $row = new html_table_row();
@@ -96,7 +96,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
                 $cell2 = new html_table_cell(get_string('noteoverdueby', 'mod_peerwork',
                     format_time($peerwork->duedate - time())));
             }
-            $row->cells = array($cell1, $cell2);
+            $row->cells = [$cell1, $cell2];
             $t->data[] = $row;
         }
 
@@ -110,7 +110,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
             $cell1 = new html_table_cell(get_string('submission', 'mod_peerwork'));
             $cell2 = new html_table_cell($fcontent);
 
-            $row->cells = array($cell1, $cell2);
+            $row->cells = [$cell1, $cell2];
             $t->data[] = $row;
         }
 
@@ -118,7 +118,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
             $row = new html_table_row();
             $cell1 = new html_table_cell(get_string('myfinalgrade', 'mod_peerwork'));
             $cell2 = new html_table_cell(format_float($data['mygrade'], 2));
-            $row->cells = array($cell1, $cell2);
+            $row->cells = [$cell1, $cell2];
             $t->data[] = $row;
         }
 
@@ -126,7 +126,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
             $row = new html_table_row();
             $cell1 = new html_table_cell(get_string('feedback', 'mod_peerwork'));
             $cell2 = new html_table_cell($data['feedback']);
-            $row->cells = array($cell1, $cell2);
+            $row->cells = [$cell1, $cell2];
             $t->data[] = $row;
         }
 
@@ -134,7 +134,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
             $row = new html_table_row();
             $cell1 = new html_table_cell(get_string('feedbackfiles', 'mod_peerwork'));
             $cell2 = new html_table_cell(implode(', ', $data['feedback_files']));
-            $row->cells = array($cell1, $cell2);
+            $row->cells = [$cell1, $cell2];
             $t->data[] = $row;
         }
 
@@ -227,7 +227,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
             }, array_keys($data['criteria']), $data['criteria']);
 
             $cell2 = new html_table_cell(implode('<hr>', $parts));
-            $row->cells = array($cell1, $cell2);
+            $row->cells = [$cell1, $cell2];
             $t->data[] = $row;
         }
 
@@ -292,7 +292,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
             }
 
             $cell2 = new html_table_cell($html);
-            $row->cells = array($cell1, $cell2);
+            $row->cells = [$cell1, $cell2];
             $t->data[] = $row;
         }
 
