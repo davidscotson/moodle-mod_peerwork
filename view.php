@@ -44,12 +44,12 @@ $edit = optional_param('edit', false, PARAM_BOOL);
 
 if ($id) {
     $cm = get_coursemodule_from_id('peerwork', $id, 0, false, MUST_EXIST);
-    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $peerwork = $DB->get_record('peerwork', array('id' => $cm->instance), '*', MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 
 } else if ($n) {
-    $peerwork = $DB->get_record('peerwork', array('id' => $n), '*', MUST_EXIST);
-    $course = $DB->get_record('course', array('id' => $peerwork->course), '*', MUST_EXIST);
+    $peerwork = $DB->get_record('peerwork', ['id' => $n], '*', MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $peerwork->course], '*', MUST_EXIST);
     $cm = get_coursemodule_from_instance('peerwork', $peerwork->id, $course->id, false, MUST_EXIST);
 } else {
     error('You must specify a course_module ID or an instance ID');
@@ -64,12 +64,12 @@ $info = new \core_availability\info_module($cminfo);
 
 require_capability('mod/peerwork:view', $context);
 
-$params = array(
+$params = [
     'objectid' => $cm->instance,
-    'context' => $context
-);
+    'context' => $context,
+];
 
-$PAGE->set_url('/mod/peerwork/view.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/peerwork/view.php', ['id' => $cm->id]);
 $PAGE->set_title(format_string($peerwork->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
@@ -98,7 +98,7 @@ if (has_capability('mod/peerwork:grade', $context)) {
         get_string('nopeergrades', 'mod_peerwork'),
         get_string('status'),
         get_string('grade', 'mod_peerwork'),
-        ''
+        '',
     ];
 
     foreach ($allgroups as $group) {
@@ -110,7 +110,7 @@ if (has_capability('mod/peerwork:grade', $context)) {
             continue;
         }
 
-        $submission = $DB->get_record('peerwork_submission', array('peerworkid' => $peerwork->id, 'groupid' => $group->id));
+        $submission = $DB->get_record('peerwork_submission', ['peerworkid' => $peerwork->id, 'groupid' => $group->id]);
         $status = peerwork_get_status($peerwork, $group, $submission);
         $grader = new mod_peerwork\group_grader($peerwork, $group->id, $submission);
         $wasgraded = $grader->was_graded();
@@ -162,25 +162,25 @@ if (has_capability('mod/peerwork:grade', $context)) {
         $gradecell->attributes['class'] = 'inplace-grading';
 
         $row = new html_table_row();
-        $row->cells = array(
+        $row->cells = [
             $OUTPUT->action_link($detailsurl, $group->name),
             count($members),
             peerwork_get_number_peers_graded($peerwork->id, $group->id),
             $status->text,
             $gradecell,
-            $OUTPUT->render($menu)
-        );
+            $OUTPUT->render($menu),
+        ];
         $t->data[] = $row;
     }
     echo html_writer::table($t);
 
     echo $OUTPUT->box_start('generalbox', null);
 
-    echo $OUTPUT->single_button(new moodle_url('export.php', array('id' => $cm->id, 'groupid' => 0, 'sesskey' => sesskey())),
+    echo $OUTPUT->single_button(new moodle_url('export.php', ['id' => $cm->id, 'groupid' => 0, 'sesskey' => sesskey()]),
         get_string("exportxls", 'mod_peerwork'), 'get');
 
 
-    echo $OUTPUT->single_button(new moodle_url('downloadallsubmissions.php', array('id' => $cm->id)),
+    echo $OUTPUT->single_button(new moodle_url('downloadallsubmissions.php', ['id' => $cm->id]),
         get_string("downloadallsubmissions", 'mod_peerwork'), 'post');
 
 
@@ -209,11 +209,11 @@ if (has_capability('mod/peerwork:grade', $context)) {
     $groupmode = groups_get_activity_groupmode($cm);
 
     // Check if already submitted.
-    $submission = $DB->get_record('peerwork_submission', array('peerworkid' => $peerwork->id, 'groupid' => $mygroup));
+    $submission = $DB->get_record('peerwork_submission', ['peerworkid' => $peerwork->id, 'groupid' => $mygroup]);
 
     // Check if I already graded my peers.
-    $myassessments = $DB->get_records('peerwork_peers', array('peerwork' => $peerwork->id, 'gradedby' => $USER->id));
-    $group = $DB->get_record('groups', array('id' => $mygroup), '*', MUST_EXIST);
+    $myassessments = $DB->get_records('peerwork_peers', ['peerwork' => $peerwork->id, 'gradedby' => $USER->id]);
+    $group = $DB->get_record('groups', ['id' => $mygroup], '*', MUST_EXIST);
     $status = peerwork_get_status($peerwork, $group);
 
     $duedate = peerwork_due_date($peerwork);
@@ -223,7 +223,7 @@ if (has_capability('mod/peerwork:grade', $context)) {
     $isopen = peerwork_is_open($peerwork, $mygroup);
 
     // Collect data on how this user graded their peers.
-    $data = array();
+    $data = [];
     $data['files']       = peerwork_submission_files($context, $group);
     $data['outstanding'] = peerwork_outstanding($peerwork, $group);
 
@@ -310,20 +310,20 @@ if (has_capability('mod/peerwork:grade', $context)) {
     // Check if there are any files at the time of opening the form.
     $files = peerwork_submission_files($context, $group);
 
-    $url = new moodle_url('view.php', array('edit' => true, 'id' => $id));
-    $mform = new mod_peerwork_submissions_form($url->out(false), array('id' => $id, 'filecount' => count($files),
+    $url = new moodle_url('view.php', ['edit' => true, 'id' => $id]);
+    $mform = new mod_peerwork_submissions_form($url->out(false), ['id' => $id, 'filecount' => count($files),
         'peerworkid' => $peerwork->id, 'fileupload' => $foptions['maxfiles'] > 0, 'peers' => $membersgradeable,
         'fileoptions' => $foptions, 'peerwork' => $peerwork, 'submission' => $submission, 'files' => $files,
-        'myassessments' => $myassessments));
+        'myassessments' => $myassessments]);
     $mform->set_data($entry);
 
-    $redirecturl = new moodle_url('view.php', array('id' => $cm->id));
+    $redirecturl = new moodle_url('view.php', ['id' => $cm->id]);
     if ($mform->is_cancelled()) {
         redirect($redirecturl);
 
     } else if (($data = $mform->get_data())) {
         peerwork_save($peerwork, $submission, $group, $course, $cm, $context, $data, $draftitemid, $membersgradeable);
-        redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        redirect(new moodle_url('view.php', ['id' => $cm->id]));
     }
 
     // Output starts here.
@@ -334,9 +334,9 @@ if (has_capability('mod/peerwork:grade', $context)) {
     echo $OUTPUT->box(format_string($peerwork->intro));
 
     $mform->display();
-    $params = array(
-        'context' => $context
-    );
+    $params = [
+        'context' => $context,
+    ];
 
     $event = \mod_peerwork\event\submission_viewed::create($params);
     $event->trigger();

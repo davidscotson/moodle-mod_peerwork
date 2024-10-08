@@ -70,9 +70,9 @@ class submissions_downloaded extends \core\event\base {
     public function get_url() {
         return new \moodle_url(
             '/mod/peerwork/downloadallsubmissions.php',
-            array(
-                'id' => $this->contextinstanceid
-                )
+            [
+                'id' => $this->contextinstanceid,
+                ]
             );
     }
 }

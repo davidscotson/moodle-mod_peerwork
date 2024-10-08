@@ -80,10 +80,10 @@ class submission_graded extends \core\event\base {
     public function get_url() {
         return new \moodle_url(
             '/mod/peerwork/details.php',
-            array(
+            [
                 'id' => $this->contextinstanceid,
-                'groupid' => $this->other['groupid']
-                )
+                'groupid' => $this->other['groupid'],
+                ]
             );
     }
 

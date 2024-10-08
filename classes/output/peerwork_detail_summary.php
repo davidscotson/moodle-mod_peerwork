@@ -164,7 +164,7 @@ class peerwork_detail_summary implements templatable, renderable {
                     'groupid' => $groupid,
                     'gradedby' => $member->id,
                     'name' => fullname($member),
-                    'href' => $url->out()
+                    'href' => $url->out(),
                 ];
 
                 foreach ($members as $peer) {
@@ -175,7 +175,7 @@ class peerwork_detail_summary implements templatable, renderable {
                     ) {
                         $gradedby['gradefor'][] = [
                             'name' => fullname($peer),
-                            'grade' => '-'
+                            'grade' => '-',
                         ];
                     } else {
                         $feedbacktext = '';
@@ -249,7 +249,7 @@ class peerwork_detail_summary implements templatable, renderable {
 
                         $gradedby['gradefor'][] = [
                             'name' => fullname($peer),
-                            'grade' => $grade . $override . $feedbacktext
+                            'grade' => $grade . $override . $feedbacktext,
                         ];
                     }
 
@@ -259,7 +259,7 @@ class peerwork_detail_summary implements templatable, renderable {
                             || !isset($grades->grades[$critid][$peer->id][$member->id])) {
                         $gradefor['gradedby'][] = [
                             'name' => $label,
-                            'grade' => '-'
+                            'grade' => '-',
                         ];
                     } else {
                         $feedbacktext = '';
@@ -332,7 +332,7 @@ class peerwork_detail_summary implements templatable, renderable {
 
                         $gradefor['gradedby'][] = [
                             'name' => fullname($peer),
-                            'grade' => $grade . $override . $feedbacktext
+                            'grade' => $grade . $override . $feedbacktext,
                         ];
                     }
                 }

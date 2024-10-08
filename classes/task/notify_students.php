@@ -97,11 +97,11 @@ class notify_students extends \core\task\scheduled_task {
             $subject = get_string('notifygradesreleasedsmall', 'mod_peerwork', $name);
             $message = get_string('notifygradesreleasedtext', 'mod_peerwork', [
                 'name' => $name,
-                'url' => $url->out()
+                'url' => $url->out(),
             ]);
             $messagehtml = get_string('notifygradesreleasedhtml', 'mod_peerwork', [
                 'name' => $name,
-                'url' => $url->out()
+                'url' => $url->out(),
             ]);
 
             $eventdata = new \core\message\message();

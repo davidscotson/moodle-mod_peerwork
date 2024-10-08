@@ -44,7 +44,7 @@ if ($groupid > 0) {
     $sql = 'peerworkid = :peerworkid AND groupid = :groupid AND COALESCE(timegraded) > 0 AND released = 0';
     $submissions = $DB->get_records_select('peerwork_submission', $sql, [
         'peerworkid' => $peerwork->id,
-        'groupid' => $groupid
+        'groupid' => $groupid,
     ]);
 } else {
     $sql = 'peerworkid = :peerworkid AND COALESCE(timegraded) > 0 AND released = 0';
@@ -63,8 +63,8 @@ foreach ($submissions as $submission) {
         'objectid' => $submission->id,
         'context' => $context,
         'other' => [
-            'groupid' => $submission->groupid
-        ]
+            'groupid' => $submission->groupid,
+        ],
     ];
     $event = \mod_peerwork\event\grades_released::create($params);
     $event->add_record_snapshot('peerwork_submission', $submission);

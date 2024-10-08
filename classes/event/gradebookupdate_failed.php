@@ -79,7 +79,7 @@ class gradebookupdate_failed extends \core\event\base {
             '/mod/peerwork/details.php',
             [
                 'id' => $this->contextinstanceid,
-                'groupid' => $this->other['groupid']
+                'groupid' => $this->other['groupid'],
             ]
         );
     }
