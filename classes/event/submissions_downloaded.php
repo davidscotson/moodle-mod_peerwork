@@ -23,7 +23,6 @@
  */
 namespace mod_peerwork\event;
 
-defined('MOODLE_INTERNAL') || die();
 /**
  * The submissions_downloaded event class.
  *

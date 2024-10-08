@@ -23,8 +23,6 @@
  */
 namespace mod_peerwork\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The submission_viewed event class.
  *

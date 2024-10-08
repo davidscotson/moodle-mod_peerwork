@@ -24,7 +24,6 @@
  */
 
 namespace mod_peerwork\output;
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * Summary.

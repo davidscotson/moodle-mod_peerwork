@@ -25,8 +25,6 @@
 
 namespace mod_peerwork;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Calculator.
  *

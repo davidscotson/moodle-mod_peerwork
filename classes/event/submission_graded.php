@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace mod_peerwork\event;
-defined('MOODLE_INTERNAL') || die();
 /**
  * The submission_graded event class.
  *

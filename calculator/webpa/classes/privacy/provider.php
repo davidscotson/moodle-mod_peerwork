@@ -24,8 +24,6 @@
 
 namespace peerworkcalculator_webpa\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy Subsystem for peerworkcalculator_webpa implementing null_provider.
  *

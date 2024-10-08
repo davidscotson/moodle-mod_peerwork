@@ -26,8 +26,6 @@ namespace mod_peerwork\plugininfo;
 
 use core\plugininfo\base;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Base Calculator.
  *
