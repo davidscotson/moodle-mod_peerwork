@@ -31,7 +31,7 @@ namespace peerworkcalculator_webpa;
  * @package   peerworkcalculator_webpa
  * @copyright 2019 Coventry University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers    \peerworkcalculator_webpa/calculator
+ * @covers    \peerworkcalculator_webpa\calculator
  */
 final class calculator_test extends \basic_testcase {
 
