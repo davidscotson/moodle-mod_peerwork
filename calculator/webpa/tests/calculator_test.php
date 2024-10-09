@@ -26,13 +26,14 @@ namespace peerworkcalculator_webpa;
 
 /**
  * WebPA testcase.
- * @group mod_peerwork
- * @package    peerworkcalculator_webpa
- * @copyright  2019 Coventry University
- * @author     Frédéric Massart <fred@branchup.tech>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @group     mod_peerwork
+ * @author    Frédéric Massart <fred@branchup.tech>
+ * @package   peerworkcalculator_webpa
+ * @copyright 2019 Coventry University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers    \peerworkcalculator_webpa\calculator
  */
-class calculator_test extends \basic_testcase {
+final class calculator_test extends \basic_testcase {
 
     /**
      * Test the WebPA result with no weighting or penalties.

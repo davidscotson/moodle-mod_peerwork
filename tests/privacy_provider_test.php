@@ -17,10 +17,10 @@
 /**
  * Privacy provider test.
  *
- * @package    mod_peerwork
- * @copyright  2019 Coventry University
- * @author     Frédéric Massart <fred@branchup.tech>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_peerwork
+ * @copyright 2019 Coventry University
+ * @author    Frédéric Massart <fred@branchup.tech>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace mod_peerwork;
 
@@ -35,17 +35,19 @@ use mod_peerwork\privacy\provider;
 /**
  * Privacy provider testcase.
  *
- * @package    mod_peerwork
- * @copyright  2019 Coventry University
- * @author     Frédéric Massart <fred@branchup.tech>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_peerwork
+ * @author    Frédéric Massart <fred@branchup.tech>
+ * @copyright 2019 Coventry University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers    mod_peerwork\privacy\provider
  */
-class privacy_provider_test extends \advanced_testcase {
+final class privacy_provider_test extends \advanced_testcase {
 
     /**
      * This method is called before each test.
      */
     protected function setUp(): void {
+        parent::setUp();
         $this->resetAfterTest(true);
     }
 
@@ -147,7 +149,7 @@ class privacy_provider_test extends \advanced_testcase {
         $this->assertContains((string)$p3ctx->id, $ctxu4);
     }
 
-    public function test_get_users_in_context() {
+    public function test_get_users_in_context(): void {
         $dg = $this->getDataGenerator();
         $pg = $dg->get_plugin_generator('mod_peerwork');
 
