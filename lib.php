@@ -88,7 +88,7 @@ function peerwork_add_instance(stdClass $peerwork, ?mod_peerwork_mod_form $mform
     $pac->update_instance($peerwork);
     
     //Add to calendar.
-    if ($peerwork->duedate) {
+    if (!empty($peerwork->duedate)) {
         $event = new stdClass();
         $event->type = CALENDAR_EVENT_TYPE_ACTION;
         $event->name        = $peerwork->name;
@@ -149,7 +149,7 @@ function peerwork_update_instance(stdClass $peerwork, ?mod_peerwork_mod_form $mf
     $return2 = $pac->update_instance($peerwork);
 
     //Update calendar.
-    if ($peerwork->duedate) {
+    if (!empty($peerwork->duedate)) {
         $event = new stdClass();
         
         if ($event->id = $DB->get_field('event', 'id', array('modulename' => 'peerwork', 'instance' => $peerwork->id))) {
