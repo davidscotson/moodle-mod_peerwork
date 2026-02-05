@@ -15,11 +15,11 @@ Feature: Peerwork calendar entries
       | user     | course | role    |
       | student1 | C1     | student |
     And the following "groups" exist:
-      | course | name   |
-      | C1     | Group 1 |
+      | name    | course | idnumber |
+      | Group 1 | C1     | G1       |
     And the following "group members" exist:
-      | user     | group  |
-      | student1 | Group 1 |
+      | user     | group |
+      | student1 | G1    |
 
   Scenario: Student can see the peerwork due date in the course calendar
     Given the following "activity" exists:
