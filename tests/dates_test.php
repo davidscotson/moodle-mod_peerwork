@@ -101,6 +101,8 @@ final class dates_test extends advanced_testcase {
         $user = $generator->create_user();
         $generator->enrol_user($user->id, $course->id);
 
+        $this->setAdminUser();
+
         $data = ['course' => $course->id];
         if ($from) {
             $data['fromdate'] = $from;
