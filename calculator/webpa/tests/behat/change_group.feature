@@ -135,7 +135,8 @@ Feature: Change the group membership
     And I follow "Group 1"
     And I expand all fieldsets
     And I click on "Select" "link" in the "#memberdropdown" "css_element"
-    And I click on "Student 2" "link" in the "#memberdropdown" "css_element"
+    And I should see "Student 2" in the "#memberdropdown .dropdown-menu.show" "css_element"
+    And I click on "Student 2" "link" in the "#memberdropdown .dropdown-menu.show" "css_element"
     And I enable overriden "student3" grade for criteria "Criteria 1"
     And I override "student3" grade for criteria "Criteria 1" with "1" "Very good"
     And I press "Save changes"

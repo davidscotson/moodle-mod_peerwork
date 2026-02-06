@@ -58,7 +58,8 @@ Feature: Overide the grades given by a peer
     And I follow "Group 1"
     And I expand all fieldsets
     And I click on "Select" "link" in the "#memberdropdown" "css_element"
-    And I click on "Student 1" "link" in the "#memberdropdown" "css_element"
+    And I should see "Student 1" in the "#memberdropdown .dropdown-menu.show" "css_element"
+    And I click on "Student 1" "link" in the "#memberdropdown .dropdown-menu.show" "css_element"
     And I enable overriden "student2" grade for criteria "Criteria 1"
     And I override "student2" grade for criteria "Criteria 1" with "0" "Very poor"
     And I press "Save changes"
@@ -82,7 +83,8 @@ Feature: Overide the grades given by a peer
     And I follow "Group 1"
     And I expand all fieldsets
     And I click on "Select" "link" in the "#memberdropdown" "css_element"
-    And I click on "Student 3" "link" in the "#memberdropdown" "css_element"
+    And I should see "Student 3" in the "#memberdropdown .dropdown-menu.show" "css_element"
+    And I click on "Student 3" "link" in the "#memberdropdown .dropdown-menu.show" "css_element"
     And I enable overriden "student2" grade for criteria "Criteria 1"
     And I override "student2" grade for criteria "Criteria 1" with "0" "Very poor"
     And I press "Save changes"
@@ -104,7 +106,8 @@ Feature: Overide the grades given by a peer
     And I follow "Group 1"
     And I expand all fieldsets
     And I click on "Select" "link" in the "#memberdropdown" "css_element"
-    And I click on "Student 3" "link" in the "#memberdropdown" "css_element"
+    And I should see "Student 3" in the "#memberdropdown .dropdown-menu.show" "css_element"
+    And I click on "Student 3" "link" in the "#memberdropdown .dropdown-menu.show" "css_element"
     And I enable overriden "student2" grade for criteria "Criteria 1"
     And I override "student2" grade for criteria "Criteria 1" with "0" ""
     And I press "Save changes"
@@ -133,7 +136,8 @@ Feature: Overide the grades given by a peer
     And I follow "Group 1"
     And I expand all fieldsets
     And I click on "Select" "link" in the "#memberdropdown" "css_element"
-    And I click on "Student 1" "link" in the "#memberdropdown" "css_element"
+    And I should see "Student 1" in the "#memberdropdown .dropdown-menu.show" "css_element"
+    And I click on "Student 1" "link" in the "#memberdropdown .dropdown-menu.show" "css_element"
     And I enable overriden "student2" grade for criteria "Criteria 1"
     And I override "student2" grade for criteria "Criteria 1" with "0" "Very poor"
     And I press "Save changes"
