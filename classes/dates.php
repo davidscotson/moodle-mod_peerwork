@@ -50,6 +50,7 @@ class dates extends activity_dates {
         if ($timeopen) {
             $openlabelid = $timeopen > $now ? 'activitydate:opens' : 'activitydate:opened';
             $dates[] = [
+                'dataid' => 'fromdate',
                 'label' => get_string($openlabelid, 'mod_peerwork'),
                 'timestamp' => (int)$timeopen,
             ];
@@ -58,6 +59,7 @@ class dates extends activity_dates {
         if ($timeclose) {
             $closelabelid = $timeclose > $now ? 'activitydate:closes' : 'activitydate:closed';
             $dates[] = [
+                'dataid' => 'duedate',
                 'label' => get_string($closelabelid, 'mod_peerwork'),
                 'timestamp' => (int)$timeclose,
             ];
