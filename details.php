@@ -33,12 +33,13 @@ $groupid = required_param('groupid', PARAM_INT);
 
 $cm             = get_coursemodule_from_id('peerwork', $id, 0, false, MUST_EXIST);
 $course         = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
-$peerwork       = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
+
 // Print the standard page header and check access rights.
 require_login($course, true, $cm);
 
-$submission     = $DB->get_record('peerwork_submission', ['peerworkid' => $peerwork->id, 'groupid' => $groupid]);
+$peerwork       = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 $group          = $DB->get_record('groups', ['id' => $groupid, 'courseid' => $course->id], '*', MUST_EXIST);
+$submission     = $DB->get_record('peerwork_submission', ['peerworkid' => $peerwork->id, 'groupid' => $groupid]);
 $members        = groups_get_members($groupid);
 $status         = peerwork_get_status($peerwork, $group);
 $context = context_module::instance($cm->id);
