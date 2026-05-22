@@ -37,6 +37,10 @@ require_login($course, true, $cm);
 require_sesskey();
 require_capability('mod/peerwork:grade', $cm->context);
 
+if ($groupid > 0) {
+    $DB->get_record('groups', ['id' => $groupid, 'courseid' => $course->id], '*', MUST_EXIST);
+}
+
 $PAGE->set_url(new moodle_url('/mod/peerwork/export.php', ['id' => $id, 'groupid' => $groupid]));
 
 if (empty($groupid)) {
