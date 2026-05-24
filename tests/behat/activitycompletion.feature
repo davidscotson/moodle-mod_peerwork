@@ -42,8 +42,8 @@ Feature: Assignment submissions
     And I am on the "Test peerwork name" "peerwork activity" page
     And I navigate to "Settings" in current page administration
     And I click on "Expand all" "link" in the "region-main" "region"
+    And I set the field "Completion tracking" to "Show activity as complete when conditions are met"
     And I set the following fields to these values:
-      | Completion tracking | Show activity as complete when conditions are met |
       | Grade peers in group | 1 |
     And I press "Save and return to course"
     And I log out
@@ -57,15 +57,14 @@ Feature: Assignment submissions
   @javascript
   Scenario: Students who grades every peer is shown as completed
     When I am on "Course 1" course homepage
-    And "Done" "button" should exist in the "Test peerwork name" "activity"
+    Then the "Test peerwork name" activity should be marked as complete
     And I log out
 
   @javascript
   Scenario: Students who has not graded every peer is not shown as completed
     And I log in as "student2"
     When I am on "Course 1" course homepage
-    And "Done" "button" should not exist in the "Test peerwork name" "activity"
-    And "To do" "button" should exist in the "Test peerwork name" "activity"
+    Then the "Test peerwork name" activity should not be marked as complete
     And I log out
 
   @javascript
