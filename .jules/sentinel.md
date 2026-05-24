@@ -7,3 +7,8 @@
 **Vulnerability:** Potential cross-course data leak using `groups_get_members()`.
 **Learning:** Core functions like `groups_get_members($groupid)` do not verify that the group belongs to the expected course.
 **Prevention:** Explicitly verify the group's `courseid` before calling group membership functions with user-supplied group IDs.
+
+## 2025-05-15 - XSS via User-Controlled Filenames
+**Vulnerability:** Cross-Site Scripting (XSS) when rendering file lists.
+**Learning:** Filenames retrieved from the file storage API are user-provided data and must be escaped using `s()` before being included in HTML output, even if they seem like "system" strings.
+**Prevention:** Always wrap `$file->get_filename()` in `s()` when outputting to HTML.

@@ -93,7 +93,8 @@ Feature: Edit the grade of a submission
   Scenario: Cannot view the gradebook hidden grade.
     Given I am on the "Course 1" course page logged in as teacher1
     And I navigate to "Setup > Gradebook setup" in the course gradebook
-    And I follow "Edit settings" in the "Test peerwork name" table row
+    And I click on "Edit" "link" in the "Test peerwork name" "table_row"
+    And I follow "Edit settings"
     And I set the following fields to these values:
       | Hidden | 1 |
     And I press "Save changes"
