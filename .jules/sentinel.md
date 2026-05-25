@@ -1,0 +1,4 @@
+## 2025-05-15 - IDOR vulnerability pattern in group-based endpoints
+**Vulnerability:** Multiple endpoints (`details.php`, `export.php`, `override.php`) accept `groupid` or `uid` (user ID) as parameters and use them to fetch records from the database or Moodle APIs without verifying they belong to the current course/activity context.
+**Learning:** `require_capability` and `require_login($course, ...)` ensure the user has access to the *activity*, but they do not automatically restrict the scope of other parameters. `groups_get_members($groupid)` will return members of any group in the system if the ID is known.
+**Prevention:** Always validate that any user-provided ID (group, user, record) belongs to the current context. For groups, check `$group->courseid == $course->id`. For members, check they are part of a group that belongs to the course.
