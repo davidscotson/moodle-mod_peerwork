@@ -42,6 +42,8 @@ $PAGE->set_url(new moodle_url('/mod/peerwork/export.php', ['id' => $id, 'groupid
 if (empty($groupid)) {
     $groupids = array_keys(groups_get_all_groups($course->id, 0, $peerwork->pwgroupingid));
 } else {
+    // Ensure the group belongs to this course.
+    $DB->get_record('groups', ['id' => $groupid, 'courseid' => $course->id], 'id', MUST_EXIST);
     $groupids = [$groupid];
 }
 
