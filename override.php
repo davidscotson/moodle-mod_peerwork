@@ -45,9 +45,17 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 require_capability('mod/peerwork:grade', $context);
 
+$group = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
+if ($group->courseid != $course->id) {
+    throw new moodle_exception('invalidid', 'mod_peerwork');
+}
+
 $gradedby = new stdClass();
 $gradedby->id = $gradedbyid;
 $members = groups_get_members($groupid);
+if (!isset($members[$gradedby->id])) {
+    throw new moodle_exception('invaliduserid', 'mod_peerwork');
+}
 $grades = peerwork_grades_overrides_by_user($peerwork, $gradedby, $members);
 $header = get_string('gradesgivenby', 'peerwork', fullname($members[$gradedby->id]));
 
