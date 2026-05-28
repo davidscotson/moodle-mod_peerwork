@@ -48,6 +48,10 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 require_capability('mod/peerwork:grade', $context);
 
+if ($group->courseid != $course->id) {
+    throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+}
+
 $plugin = 'peerworkcalculator_' . $peerwork->calculator;
 $classname = '\\' . $plugin . '\calculator';
 $calcmissing = !class_exists($classname);

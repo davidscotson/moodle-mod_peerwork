@@ -1,0 +1,4 @@
+## 2025-01-24 - IDOR Vulnerability in details.php
+**Vulnerability:** An Insecure Direct Object Reference (IDOR) was found in `details.php`. The script accepted a `groupid` parameter but did not verify if the group belonged to the course context of the activity, potentially allowing users with the `mod/peerwork:grade` capability to view or grade groups from other courses.
+**Learning:** Standard capability checks (`require_capability`) in Moodle confirm what a user can do in a context, but they do not automatically validate that all passed IDs (like `groupid`) are valid within that specific context.
+**Prevention:** Always validate that any object IDs provided as parameters (groups, users, submissions) actually belong to the course/module context being accessed by comparing their `courseid` or parent relationship against the validated context objects.
