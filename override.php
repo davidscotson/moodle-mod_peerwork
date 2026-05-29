@@ -36,9 +36,21 @@ $cm = get_coursemodule_from_id('peerwork', $id, 0, false, MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 
+// Validate that the group belongs to the course.
+$group = $DB->get_record('groups', ['id' => $groupid], 'id, courseid', MUST_EXIST);
+if ($group->courseid != $course->id) {
+    throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+}
+
 // Print the standard page header and check access rights.
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
+
+// Validate that the user is enrolled in the course.
+if (!is_enrolled($context, $gradedbyid)) {
+    throw new moodle_exception('invaliduserid', 'mod_peerwork');
+}
+
 $PAGE->set_url('/mod/peerwork/override.php', ['id' => $cm->id, 'groupid' => $groupid]);
 $PAGE->set_title(format_string($peerwork->name));
 $PAGE->set_heading(format_string($course->fullname));

@@ -30,6 +30,14 @@ $id = required_param('id', PARAM_INT);
 $groupid = required_param('groupid', PARAM_INT);
 
 list($course, $cm) = get_course_and_cm_from_cmid($id, 'peerwork');
+
+// Validate that the group belongs to the course.
+if ($groupid > 0) {
+    $group = $DB->get_record('groups', ['id' => $groupid], 'id, courseid', MUST_EXIST);
+    if ($group->courseid != $course->id) {
+        throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+    }
+}
 $context = context_module::instance($cm->id);
 
 require_login($course, false, $cm);
