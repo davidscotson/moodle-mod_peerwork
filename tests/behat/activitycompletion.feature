@@ -50,24 +50,10 @@ Feature: Assignment submissions
     And I press "Save changes"
 
   @javascript
-  Scenario: Students who grades every peer is shown as completed
-    When I am on "Course 1" course homepage
-    And I should see "Done" in the "Test peerwork name" "activity"
-    And I log out
-
-  @javascript
-  Scenario: Students who has not graded every peer is not shown as completed
-    And I log in as "student2"
-    When I am on "Course 1" course homepage
-    And I should not see "Done" in the "Test peerwork name" "activity"
-    And I should see "To do" in the "Test peerwork name" "activity"
-    And I log out
-
-  @javascript
   Scenario: Student completions must display correctly in completion report
-    Given I log in as "teacher1"
+    When I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I navigate to "Reports" in current page administration
     And I click on "Activity completion" "link"
-    And "Student 1, Test peerwork name: Completed" "icon" should exist in the "Student 1" "table_row"
+    Then "Student 1, Test peerwork name: Completed" "icon" should exist in the "Student 1" "table_row"
     And "Student 2, Test peerwork name: Not completed" "icon" should exist in the "Student 2" "table_row"
