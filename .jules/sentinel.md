@@ -1,0 +1,4 @@
+## 2025-01-24 - IDOR Vulnerability in Moodle Parameter Validation
+**Vulnerability:** Insecure Direct Object Reference (IDOR) via the `groupid` parameter in `export.php`.
+**Learning:** In Moodle, `require_capability` checks if a user has a specific permission in a context (like a course module), but it doesn't automatically verify that other parameters (like a `groupid` passed in the URL) actually belong to that same context. This allows an attacker to access data from other courses by simply changing the `groupid`.
+**Prevention:** Always validate that any user-provided ID (group, user, submission, etc.) belongs to the expected course or activity context. Use `$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $course->id])` or similar checks before proceeding with operations using that ID.
