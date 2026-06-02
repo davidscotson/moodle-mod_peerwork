@@ -548,7 +548,7 @@ function peerwork_get_number_peers_graded($peerworkid, $groupid, $userid = null)
         $params[] = $userid;
     }
 
-    return $DB->count_records_select('peerwork_peers', $sql, $params, 'COUNT(DISTINCT gradedby)');
+    return $DB->count_records_select('peerwork_peers', $sql, $params, 'COUNT(DISTINCT gradefor)');
 }
 
 /**
