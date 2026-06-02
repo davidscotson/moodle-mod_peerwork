@@ -38,6 +38,11 @@ require_capability('mod/peerwork:grade', $context);
 
 $PAGE->set_url('/mod/peerwork/clearsubmissions.php', ['id' => $cm->id, 'groupid' => $groupid]);
 
+// Check that the group belongs to this course.
+if ($groupid > 0 && !$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $course->id])) {
+    throw new moodle_exception('invalidgroupid', 'error');
+}
+
 $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 
 mod_peerwork_clear_submissions($peerwork, $context, $groupid);

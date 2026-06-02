@@ -548,7 +548,7 @@ function peerwork_get_number_peers_graded($peerworkid, $groupid, $userid = null)
         $params[] = $userid;
     }
 
-    return $DB->count_records_select('peerwork_peers', $sql, $params, 'COUNT(DISTINCT gradedby)');
+    return $DB->count_records_select('peerwork_peers', $sql, $params, 'COUNT(DISTINCT gradefor)');
 }
 
 /**
@@ -644,7 +644,7 @@ function peerwork_feedback_files($context, $group) {
             $fileurl = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
                 $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename());
 
-            $allfiles[] = "<a href='$fileurl'>" . $file->get_filename() . '</a>';
+            $allfiles[] = "<a href='$fileurl'>" . s($file->get_filename()) . '</a>';
         }
     }
     return $allfiles;
