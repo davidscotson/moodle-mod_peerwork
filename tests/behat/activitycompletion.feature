@@ -33,14 +33,18 @@ Feature: Assignment submissions
     And I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
     And I add a "peerwork" activity to course "Course 1" section "1" and I fill the form with:
-      | Peer assessment         | Test peerwork name                                |
-      | Description             | Test peerwork description                         |
-      | Peer grades visibility  | Hidden from students                              |
-      | Require justification   | Disabled                                          |
-      | Criteria 1 description  | Criteria 1                                        |
-      | Criteria 1 scoring type | Default competence scale                          |
-      | Completion tracking     | Show activity as complete when conditions are met |
-      | Grade peers in group    | 1                                                 |
+      | Peer assessment         | Test peerwork name        |
+      | Description             | Test peerwork description |
+      | Peer grades visibility  | Hidden from students      |
+      | Require justification   | Disabled                  |
+      | Criteria 1 description  | Criteria 1                |
+      | Criteria 1 scoring type | Default competence scale  |
+    And I am on the "Test peerwork name" "peerwork activity" page
+    And I navigate to "Settings" in current page administration
+    And I expand all fieldsets
+    And I set the field "completion" to "2"
+    And I set the field "Grade peers in group" to "1"
+    And I press "Save and return to course"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
     And I press "Add submission"
@@ -52,15 +56,14 @@ Feature: Assignment submissions
   @javascript
   Scenario: Students who grades every peer is shown as completed
     When I am on "Course 1" course homepage
-    And "Done" "button" should exist in the "Test peerwork name" "activity"
+    Then I should see "Done" in the "Test peerwork name" "activity"
     And I log out
 
   @javascript
   Scenario: Students who has not graded every peer is not shown as completed
     And I log in as "student2"
     When I am on "Course 1" course homepage
-    And "Done" "button" should not exist in the "Test peerwork name" "activity"
-    And "To do" "button" should exist in the "Test peerwork name" "activity"
+    Then I should not see "Done" in the "Test peerwork name" "activity"
     And I log out
 
   @javascript
