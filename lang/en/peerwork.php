@@ -370,3 +370,6 @@ $string['eventsubmission_exported'] = 'peerwork export';
 $string['eventsubmissions_exported'] = 'peerwork export all';
 
 $string['multiplegroups'] = 'The following people belong to more than one group: {$a}. Their grades have not been updated.';
+$string['invalidgroupid'] = 'Invalid group ID';
+$string['invaliduserid'] = 'Invalid user ID';
+$string['invalidpeerworkid'] = 'Invalid peerwork ID';
