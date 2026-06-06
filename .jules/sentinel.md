@@ -1,0 +1,4 @@
+## 2024-11-20 - Insecure Direct Object Reference (IDOR) in Group and User Parameters
+**Vulnerability:** Several PHP endpoints accepted `groupid`, `uid`, or `pid` parameters and performed actions or displayed data without verifying that these IDs belonged to the current course context or that the users were authorized for that specific object.
+**Learning:** `require_login($course)` and `require_capability()` ensure the user has general access but do not automatically validate that arbitrary ID parameters in the request are consistent with the established course context.
+**Prevention:** Always explicitly validate that any ID parameters (like `groupid`) belong to the current course using `$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $course->id])` or similar checks. For user IDs, verify enrollment in the course context using `is_enrolled($context, $userid)`.
