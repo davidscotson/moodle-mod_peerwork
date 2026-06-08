@@ -1483,7 +1483,8 @@ function mod_peerwork_unlock_submission($submissionid) {
  */
 function mod_peerwork_get_locked_graders($peerworkid) {
     global $DB;
-    return $DB->get_fieldset_select('peerwork_peers', 'DISTINCT gradedby', 'peerwork = ? AND locked = 1', [$peerworkid]);
+    $sql = 'SELECT DISTINCT gradedby FROM {peerwork_peers} WHERE peerwork = ? AND locked = 1';
+    return $DB->get_fieldset_sql($sql, [$peerworkid]);
 }
 
 /**
@@ -1500,8 +1501,8 @@ function mod_peerwork_get_locked_graders($peerworkid) {
  */
 function mod_peerwork_get_locked_peers($peerwork, $gradedby) {
     global $DB;
-    $sql = 'peerwork = :peerworkid AND gradedby = :gradedby AND locked = 1';
-    return $DB->get_fieldset_select('peerwork_peers', 'DISTINCT gradefor', $sql, [
+    $sql = 'SELECT DISTINCT gradefor FROM {peerwork_peers} WHERE peerwork = :peerworkid AND gradedby = :gradedby AND locked = 1';
+    return $DB->get_fieldset_sql($sql, [
         'peerworkid' => $peerwork->id,
         'gradedby' => $gradedby,
     ]);
