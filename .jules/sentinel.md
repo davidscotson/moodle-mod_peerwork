@@ -1,0 +1,4 @@
+## 2025-05-15 - Plugin-wide IDOR and XSS Hardening
+**Vulnerability:** Several PHP scripts (`details.php`, `override.php`, etc.) accepted ID parameters (`groupid`, `uid`, `pid`) without verifying their association with the current course context, allowing potential cross-course data access (IDOR). Additionally, filenames and criteria descriptions were rendered without HTML escaping (XSS).
+**Learning:** Even with `require_login()` and `require_capability()`, parameter-context consistency must be explicitly validated (e.g., via `$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $course->id])`).
+**Prevention:** Always validate that object IDs provided in request parameters belong to the expected parent context (course, instance, etc.) and use Moodle's `s()` function for all user-controlled text in HTML output.
