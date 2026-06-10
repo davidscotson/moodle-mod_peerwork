@@ -38,6 +38,7 @@ $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST
 
 // Print the standard page header and check access rights.
 require_login($course, true, $cm);
+require_sesskey();
 $context = context_module::instance($cm->id);
 
 if ($peerworkid != $peerwork->id) {
