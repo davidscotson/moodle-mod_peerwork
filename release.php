@@ -40,6 +40,10 @@ $PAGE->set_url('/mod/peerwork/release.php', ['id' => $cm->id, 'groupid' => $grou
 
 $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 
+if ($groupid > 0 && !$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $course->id])) {
+    throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+}
+
 if ($groupid > 0) {
     $sql = 'peerworkid = :peerworkid AND groupid = :groupid AND COALESCE(timegraded) > 0 AND released = 0';
     $submissions = $DB->get_records_select('peerwork_submission', $sql, [
