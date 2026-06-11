@@ -774,12 +774,18 @@ function peerwork_outstanding($peerwork, $group) {
     global $DB;
 
     $members = groups_get_members($group->id);
+    if (empty($members)) {
+        return [];
+    }
+
+    $gradedbyids = $DB->get_fieldset_select('peerwork_peers', 'DISTINCT gradedby',
+        'peerwork = ? AND groupid = ?', [$peerwork->id, $group->id]);
+    $gradedbyids = array_flip($gradedbyids);
+
     foreach ($members as $k => $member) {
-        if ($DB->get_record('peerwork_peers', ['peerwork' => $peerwork->id, 'groupid' => $group->id,
-            'gradedby' => $member->id], 'id', IGNORE_MULTIPLE)) {
+        if (isset($gradedbyids[$member->id])) {
             unset($members[$k]);
         }
-
     }
     return $members;
 }
@@ -1046,7 +1052,15 @@ function peerwork_save($peerwork, $submission, $group, $course, $cm, $context, $
     // Suggest to check, and eventually update, the completion state.
     $completion = new completion_info($course);
     if ($completion->is_enabled($cm) && $peerwork->completiongradedpeers) {
-        $completion->update_state($cm, COMPLETION_COMPLETE);
+        $peers = peerwork_get_peers($course, $peerwork, $peerwork->pwgroupingid, $group->id, $USER->id);
+        $gradedcount = $DB->count_records_select(
+            'peerwork_peers',
+            'peerwork = ? AND gradedby = ?',
+            [$peerwork->id, $USER->id],
+            'COUNT(DISTINCT gradefor)'
+        );
+        $state = (count($peers) <= $gradedcount) ? COMPLETION_COMPLETE : COMPLETION_INCOMPLETE;
+        $completion->update_state($cm, $state);
     }
 
     // Send email confirmation.

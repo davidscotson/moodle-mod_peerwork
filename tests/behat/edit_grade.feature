@@ -94,8 +94,9 @@ Feature: Edit the grade of a submission
     Given I am on the "Course 1" course page logged in as teacher1
     And I navigate to "Setup > Gradebook setup" in the course gradebook
     And I click on "Edit" "link" in the "Test peerwork name" "table_row"
-    And I follow "Edit settings"
-    And I set the field "Hidden" to "1"
+    And I click on "Edit settings" "link" in the "Test peerwork name" "table_row"
+    And I set the following fields to these values:
+      | Hidden | 1 |
     And I press "Save changes"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
