@@ -61,6 +61,11 @@ class unlock_graders extends \external_api {
         self::validate_context($context);
         require_capability('mod/peerwork:grade', $context);
 
+        // Validate graderid is enrolled in course.
+        if ($graderid && !is_enrolled($context, $graderid)) {
+            throw new \moodle_exception('invaliduserid', 'mod_peerwork');
+        }
+
         mod_peerwork_unlock_grader($peerworkid, $graderid);
 
         return true;
