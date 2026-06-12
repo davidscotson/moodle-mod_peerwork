@@ -123,7 +123,8 @@ class mod_peerwork_renderer extends plugin_renderer_base {
         if (isset($data['feedback'])) {
             $row = new html_table_row();
             $cell1 = new html_table_cell(get_string('feedback', 'mod_peerwork'));
-            $cell2 = new html_table_cell($data['feedback']);
+            $feedback = format_text($data['feedback'], $data['feedbackformat'] ?? FORMAT_HTML, ['context' => $summary->get_context()]);
+            $cell2 = new html_table_cell($feedback);
             $row->cells = [$cell1, $cell2];
             $t->data[] = $row;
         }
@@ -148,10 +149,11 @@ class mod_peerwork_renderer extends plugin_renderer_base {
                 shuffle($members);
             }
 
-            $parts = array_map(function($criteriaid, $criteria) use ($data, $displaytotals, $isanon, $members, $scales) {
+            $parts = array_map(function($criteriaid, $criteria) use ($data, $displaytotals, $isanon, $members, $scales, $summary) {
                 $gradeinfo = $data['peergrades'][$criteriaid] ?? [];
                 $html = html_writer::start_div();
-                $html .= html_writer::div($criteria->description);
+                $description = format_text($criteria->description, $criteria->descriptionformat, ['context' => $summary->get_context()]);
+                $html .= html_writer::div($description);
 
                 $scaleid = abs($criteria->grade);
                 $scale = isset($scales[$scaleid]) ? $scales[$scaleid] : null;
@@ -256,12 +258,13 @@ class mod_peerwork_renderer extends plugin_renderer_base {
                         } else {
                             $content = html_writer::tag('blockquote', s($justification->justification));
                         }
-                        $html .= html_writer::tag('div', get_string('peersaid', 'mod_peerwork', fullname($member)) . $content);
+                        $html .= html_writer::tag('div', get_string('peersaid', 'mod_peerwork', s(fullname($member))) . $content);
                     }
                 }
             } else if ($data['justificationtype'] == MOD_PEERWORK_JUSTIFICATION_CRITERIA) {
                 foreach ($data['criteria'] as $id => $criterion) {
-                    $html .= html_writer::tag('p', ($criterion->description));
+                    $description = format_text($criterion->description, $criterion->descriptionformat, ['context' => $summary->get_context()]);
+                    $html .= html_writer::tag('p', $description);
 
                     foreach ($members as $member) {
                         $justification = $data['justifications'][$id][$member->id] ?? null;
@@ -281,7 +284,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
                                 $content = html_writer::tag('blockquote', s($justification->justification));
                             }
 
-                            $html .= html_writer::tag('div', get_string('peersaid', 'mod_peerwork', fullname($member)) . $content);
+                            $html .= html_writer::tag('div', get_string('peersaid', 'mod_peerwork', s(fullname($member))) . $content);
                         }
                     }
 
