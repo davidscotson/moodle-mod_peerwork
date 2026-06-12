@@ -57,13 +57,18 @@ class custom_completion extends activity_custom_completion {
 
             $course = $this->cm->get_course();
             $peers = peerwork_get_peers($course, $peerwork, $peerwork->pwgroupingid, $groupid, $this->userid);
-            $gradedcount = $DB->count_records_select(
+
+            $pac = new \mod_peerwork_criteria($peerwork->id);
+            $criteria = $pac->get_criteria();
+
+            $gradedcount = $DB->count_records(
                 'peerwork_peers',
-                'peerwork = ?',
-                [$peerwork->id],
-                'COUNT(DISTINCT gradefor)'
+                ['peerwork' => $peerwork->id, 'gradedby' => $this->userid]
             );
-            return count($peers) <= $gradedcount;
+
+            $expectedcount = count($peers) * count($criteria);
+
+            return $expectedcount > 0 && $gradedcount >= $expectedcount;
         }
 
         return false;
@@ -80,7 +85,7 @@ class custom_completion extends activity_custom_completion {
 
         switch ($rule) {
             case 'completiongradedpeers':
-                $status = static::check_graded_peers();
+                $status = $this->check_graded_peers();
                 break;
         }
 
