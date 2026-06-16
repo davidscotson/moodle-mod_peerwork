@@ -37,10 +37,16 @@ $peerwork       = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST
 $submission     = $DB->get_record('peerwork_submission', ['peerworkid' => $peerwork->id, 'groupid' => $groupid]);
 $members        = groups_get_members($groupid);
 $group          = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
-$status         = peerwork_get_status($peerwork, $group);
 
 // Print the standard page header and check access rights.
 require_login($course, true, $cm);
+
+// Check that group belongs to the current course.
+if ($group->courseid != $course->id) {
+    throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+}
+
+$status         = peerwork_get_status($peerwork, $group);
 $context = context_module::instance($cm->id);
 $PAGE->set_url('/mod/peerwork/details.php', ['id' => $cm->id, 'groupid' => $groupid]);
 $PAGE->set_title(format_string($peerwork->name));
