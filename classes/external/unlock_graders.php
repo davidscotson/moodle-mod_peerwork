@@ -56,10 +56,16 @@ class unlock_graders extends \external_api {
         $peerworkid = $params['peerworkid'];
         $graderid = $params['graderid'];
 
+        global $DB;
         $cm = get_coursemodule_from_instance('peerwork', $peerworkid, 0, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         self::validate_context($context);
         require_capability('mod/peerwork:grade', $context);
+
+        // Check that the grader belongs to the peerwork instance.
+        if (!$DB->record_exists('peerwork_peers', ['peerwork' => $peerworkid, 'gradedby' => $graderid])) {
+            throw new \moodle_exception('invaliduserid', 'mod_peerwork');
+        }
 
         mod_peerwork_unlock_grader($peerworkid, $graderid);
 
