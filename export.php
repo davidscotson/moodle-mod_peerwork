@@ -31,11 +31,19 @@ $id = required_param('id', PARAM_INT);
 $groupid = optional_param('groupid', 0, PARAM_INT);
 
 list($course, $cm) = get_course_and_cm_from_cmid($id, 'peerwork');
-$peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 
 require_login($course, true, $cm);
 require_sesskey();
 require_capability('mod/peerwork:grade', $cm->context);
+
+$peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
+
+if (!empty($groupid)) {
+    $group = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
+    if ($group->courseid != $course->id) {
+        throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+    }
+}
 
 $PAGE->set_url(new moodle_url('/mod/peerwork/export.php', ['id' => $id, 'groupid' => $groupid]));
 
