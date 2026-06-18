@@ -34,16 +34,35 @@ $gradedbyid = required_param('uid', PARAM_INT);
 
 $cm = get_coursemodule_from_id('peerwork', $id, 0, false, MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
-$peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 
 // Print the standard page header and check access rights.
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
+require_capability('mod/peerwork:grade', $context);
+
+$peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
+
+// Validate peerworkid.
+if ($peerworkid != $peerwork->id) {
+    throw new moodle_exception('invalidpeerworkid', 'mod_peerwork');
+}
+
+$group = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
+
+// Validate group belongs to course.
+if ($group->courseid != $course->id) {
+    throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+}
+
+// Validate gradedbyid is member of group.
+if (!groups_is_member($groupid, $gradedbyid)) {
+    throw new moodle_exception('invaliduserid', 'mod_peerwork');
+}
+
 $PAGE->set_url('/mod/peerwork/override.php', ['id' => $cm->id, 'groupid' => $groupid]);
 $PAGE->set_title(format_string($peerwork->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
-require_capability('mod/peerwork:grade', $context);
 
 $gradedby = new stdClass();
 $gradedby->id = $gradedbyid;

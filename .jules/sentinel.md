@@ -1,0 +1,4 @@
+## 2026-06-03 - Systemic IDOR Vulnerability Remediation
+**Vulnerability:** Multiple endpoints (details.php, override.php, export.php, release.php, clearsubmissions.php, and external functions) were vulnerable to Insecure Direct Object Reference (IDOR). Request parameters like `groupid`, `userid`, and `peerworkid` were used to fetch or modify data without verifying their consistency with the authenticated course and activity context.
+**Learning:** `require_login($course)` and `require_capability` ensure that a user has general access to a course or capability, but they do not automatically validate that specific object IDs provided in the request belong to that course or activity instance.
+**Prevention:** Always explicitly validate that request parameters (especially database IDs) belong to the expected parent context (e.g., verify `group->courseid == course->id` and `user` is enrolled in the course) before performing sensitive operations.
