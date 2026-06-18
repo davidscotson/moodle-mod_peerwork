@@ -124,7 +124,7 @@ Feature: Overide the grades given by a peer
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student2
     Then I should see "93.33" in the "My final grade" "table_row"
     And I am on "Course 1" course homepage
-    And I navigate to "View > User report" in the course gradebook
+    And I navigate to "View > User report" in current page administration
     Then the following should exist in the "user-grade" table:
       | Grade item         | Grade |
       | Test peerwork name | 93.33 |
@@ -141,7 +141,7 @@ Feature: Overide the grades given by a peer
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student2
     Then I should see "40.00" in the "My final grade" "table_row"
     And I am on "Course 1" course homepage
-    And I navigate to "View > User report" in the course gradebook
+    And I navigate to "View > User report" in current page administration
     Then the following should exist in the "user-grade" table:
       | Grade item         | Grade |
       | Test peerwork name | 40.00 |

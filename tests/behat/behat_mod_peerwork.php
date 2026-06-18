@@ -129,8 +129,8 @@ class behat_mod_peerwork extends behat_base {
      */
     public function i_give_revised_grade($peer, $grade) {
         $studentid = $this->get_student_id($peer);
-        $fieldlocator = "id_grade_$studentid";
-        $fieldxpath = "//input[@id='" . $fieldlocator . "']";
+        $fieldlocator = "grade_$studentid";
+        $fieldxpath = "//input[@name='" . $fieldlocator . "']";
 
         $this->execute('behat_forms::i_set_the_field_with_xpath_to', [$fieldxpath, $grade]);
     }
