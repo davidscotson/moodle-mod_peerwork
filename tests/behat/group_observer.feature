@@ -67,7 +67,7 @@ Feature: Change the group members after grading
     Given I am on the "Test peerwork name" "peerwork activity" page logged in as student2
     Then I should see "100" in the "My final grade" "table_row"
     And I am on "Course 1" course homepage
-    And I navigate to "View > User report" in the course gradebook
+    And I navigate to "View > User report" in current page administration
     Then the following should exist in the "user-grade" table:
       | Grade item         | Grade  |
       | Test peerwork name | 100.00 |
@@ -78,7 +78,7 @@ Feature: Change the group members after grading
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student2
     Then I should see "50" in the "My final grade" "table_row"
     And I am on "Course 1" course homepage
-    And I navigate to "View > User report" in the course gradebook
+    And I navigate to "View > User report" in current page administration
     Then the following should exist in the "user-grade" table:
       | Grade item         | Grade |
       | Test peerwork name | 50.00 |
@@ -90,7 +90,7 @@ Feature: Change the group members after grading
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student2
     Then I should see "100" in the "My final grade" "table_row"
     And I am on "Course 1" course homepage
-    And I navigate to "View > User report" in the course gradebook
+    And I navigate to "View > User report" in current page administration
     Then the following should exist in the "user-grade" table:
       | Grade item         | Grade  |
       | Test peerwork name | 100.00 |
@@ -102,7 +102,7 @@ Feature: Change the group members after grading
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student4
     Then I should see "50" in the "My final grade" "table_row"
     And I am on "Course 1" course homepage
-    And I navigate to "View > User report" in the course gradebook
+    And I navigate to "View > User report" in current page administration
     Then the following should exist in the "user-grade" table:
       | Grade item         | Grade |
       | Test peerwork name | 50.00 |
