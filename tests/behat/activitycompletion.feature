@@ -57,14 +57,14 @@ Feature: Assignment submissions
   @javascript
   Scenario: Students who grades every peer is shown as completed
     When I am on "Course 1" course homepage
-    Then I should see "Done" in the "Test peerwork name" "activity"
+    Then the "Test peerwork name" "activity" should be marked as complete
     And I log out
 
   @javascript
   Scenario: Students who has not graded every peer is not shown as completed
     And I log in as "student2"
     When I am on "Course 1" course homepage
-    Then I should see "To do" in the "Test peerwork name" "activity"
+    Then the "Test peerwork name" "activity" should be marked as incomplete
     And I log out
 
   @javascript
