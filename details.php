@@ -31,22 +31,28 @@ require_once($CFG->dirroot . '/lib/gradelib.php');
 $id = required_param('id', PARAM_INT);
 $groupid = required_param('groupid', PARAM_INT);
 
-$cm             = get_coursemodule_from_id('peerwork', $id, 0, false, MUST_EXIST);
-$course         = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
-$peerwork       = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
-$submission     = $DB->get_record('peerwork_submission', ['peerworkid' => $peerwork->id, 'groupid' => $groupid]);
-$members        = groups_get_members($groupid);
-$group          = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
-$status         = peerwork_get_status($peerwork, $group);
+$cm     = get_coursemodule_from_id('peerwork', $id, 0, false, MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 
 // Print the standard page header and check access rights.
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
+require_capability('mod/peerwork:grade', $context);
+
+$group = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
+if ($group->courseid != $course->id) {
+    throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+}
+
+$peerwork       = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
+$submission     = $DB->get_record('peerwork_submission', ['peerworkid' => $peerwork->id, 'groupid' => $groupid]);
+$members        = groups_get_members($groupid);
+$status         = peerwork_get_status($peerwork, $group);
+
 $PAGE->set_url('/mod/peerwork/details.php', ['id' => $cm->id, 'groupid' => $groupid]);
 $PAGE->set_title(format_string($peerwork->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
-require_capability('mod/peerwork:grade', $context);
 
 $plugin = 'peerworkcalculator_' . $peerwork->calculator;
 $classname = '\\' . $plugin . '\calculator';
