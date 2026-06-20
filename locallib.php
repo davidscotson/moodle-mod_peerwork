@@ -1046,7 +1046,20 @@ function peerwork_save($peerwork, $submission, $group, $course, $cm, $context, $
     // Suggest to check, and eventually update, the completion state.
     $completion = new completion_info($course);
     if ($completion->is_enabled($cm) && $peerwork->completiongradedpeers) {
-        $completion->update_state($cm, COMPLETION_COMPLETE);
+        $pac = new mod_peerwork_criteria($peerwork->id);
+        $criteria = $pac->get_criteria();
+        $peers = peerwork_get_peers($course, $peerwork, $peerwork->pwgroupingid, (int)$group->id, $USER->id);
+        $expectedcount = count($peers) * count($criteria);
+        $gradedcount = $DB->count_records('peerwork_peers', [
+            'peerwork' => $peerwork->id,
+            'gradedby' => $USER->id,
+            'groupid' => $group->id
+        ]);
+        if ($gradedcount >= $expectedcount) {
+            $completion->update_state($cm, COMPLETION_COMPLETE);
+        } else {
+            $completion->update_state($cm, COMPLETION_INCOMPLETE);
+        }
     }
 
     // Send email confirmation.
