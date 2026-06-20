@@ -47,23 +47,32 @@ class custom_completion extends activity_custom_completion {
         $peerwork = $DB->get_record('peerwork', ['id' => $this->cm->instance], '*', MUST_EXIST);
 
         // Check whether the user has graded all their peers.
-        if ($this->cm->customdata['customcompletionrules']['completiongradedpeers']) {
-            $groupid = peerwork_get_mygroup($this->cm->course, $this->userid, $peerwork->pwgroupingid, false);
+        if (!empty($this->cm->customdata['customcompletionrules']['completiongradedpeers'])) {
+            $courseid = (int) $this->cm->course;
+            $groupid = peerwork_get_mygroup($courseid, $this->userid, $peerwork->pwgroupingid, false);
 
             // The user does not have the expected group.
             if (!$groupid) {
                 return false;
             }
 
-            $course = $this->cm->get_course();
-            $peers = peerwork_get_peers($course, $peerwork, $peerwork->pwgroupingid, $groupid, $this->userid);
-            $gradedcount = $DB->count_records_select(
-                'peerwork_peers',
-                'peerwork = ?',
-                [$peerwork->id],
-                'COUNT(DISTINCT gradefor)'
-            );
-            return count($peers) <= $gradedcount;
+            $pac = new \mod_peerwork_criteria($peerwork->id);
+            $criteria = $pac->get_criteria();
+            if (empty($criteria)) {
+                return true;
+            }
+
+            $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
+            $peers = peerwork_get_peers($course, $peerwork, $peerwork->pwgroupingid, (int)$groupid, $this->userid);
+            $expectedcount = count($peers) * count($criteria);
+
+            $gradedcount = $DB->count_records('peerwork_peers', [
+                'peerwork' => $peerwork->id,
+                'gradedby' => $this->userid,
+                'groupid' => $groupid
+            ]);
+
+            return $gradedcount >= $expectedcount;
         }
 
         return false;
