@@ -1,0 +1,4 @@
+## 2025-05-14 - Systemic IDOR via Missing Context Validation
+**Vulnerability:** Insecure Direct Object Reference (IDOR) vulnerabilities across multiple activity endpoints (`details.php`, `override.php`, `clearsubmissions.php`, `export.php`, `release.php`, and `classes/external/unlock_graders.php`).
+**Learning:** Request parameters like `groupid`, `userid`, and `peerworkid` were used to fetch or modify data without verifying that these IDs belonged to the authenticated course and activity context. `require_login($course)` only ensures the user has access to the course, not that the provided parameters are consistent with that course.
+**Prevention:** Always validate that object IDs provided in request parameters (e.g., groups, users) belong to the expected course and activity instance. Specifically, check `$group->courseid == $course->id` and use `is_enrolled($context, $userid)` for target users.
