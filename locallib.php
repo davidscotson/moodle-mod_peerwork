@@ -774,12 +774,19 @@ function peerwork_outstanding($peerwork, $group) {
     global $DB;
 
     $members = groups_get_members($group->id);
+    if (empty($members)) {
+        return [];
+    }
+
+    $gradedby = $DB->get_records_menu('peerwork_peers', [
+        'peerwork' => $peerwork->id,
+        'groupid' => $group->id,
+    ], '', 'gradedby, id');
+
     foreach ($members as $k => $member) {
-        if ($DB->get_record('peerwork_peers', ['peerwork' => $peerwork->id, 'groupid' => $group->id,
-            'gradedby' => $member->id], 'id', IGNORE_MULTIPLE)) {
+        if (isset($gradedby[$member->id])) {
             unset($members[$k]);
         }
-
     }
     return $members;
 }
@@ -1046,7 +1053,9 @@ function peerwork_save($peerwork, $submission, $group, $course, $cm, $context, $
     // Suggest to check, and eventually update, the completion state.
     $completion = new completion_info($course);
     if ($completion->is_enabled($cm) && $peerwork->completiongradedpeers) {
-        $completion->update_state($cm, COMPLETION_COMPLETE);
+        $customcompletion = new \mod_peerwork\completion\custom_completion($cm, (int) $USER->id);
+        $state = $customcompletion->get_state('completiongradedpeers');
+        $completion->update_state($cm, $state);
     }
 
     // Send email confirmation.
