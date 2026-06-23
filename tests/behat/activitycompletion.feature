@@ -46,7 +46,7 @@ Feature: Assignment submissions
     And I press "Save and display"
     And I navigate to "Settings" in current page administration
     And I expand all fieldsets
-    And I set the field "Grade peers in group" to "1"
+    And I set the field "completiongradedpeers" to "1"
     And I press "Save and display"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
