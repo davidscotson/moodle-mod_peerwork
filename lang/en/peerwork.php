@@ -131,6 +131,7 @@ $string['groupsubmissionsettings'] = 'Group submission settings';
 $string['groupsubmittedon'] = 'Group submitted on';
 $string['hideshow'] = 'Hide/Show';
 $string['invalidgrade'] = 'Invalid grade';
+$string['invalidgroupid'] = 'The group provided does not belong to this course.';
 $string['invalidpaweighting'] = 'Invalid weighting';
 $string['invalidscale'] = 'Invalid scale. Please select from options above.';
 $string['justification'] = 'Justification';
