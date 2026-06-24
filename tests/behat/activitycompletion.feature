@@ -42,11 +42,11 @@ Feature: Assignment submissions
     And I am on the "Test peerwork name" "peerwork activity" page
     And I navigate to "Settings" in current page administration
     And I expand all fieldsets
-    And I set the field "completion" to "2"
+    And I set the field "Completion tracking" to "Show activity as complete when conditions are met"
     And I press "Save and display"
     And I navigate to "Settings" in current page administration
     And I expand all fieldsets
-    And I set the field "completiongradedpeers" to "1"
+    And I check "Grade peers in group"
     And I press "Save and return to course"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
