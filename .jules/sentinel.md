@@ -1,0 +1,4 @@
+## 2026-06-24 - Systemic IDOR Remediation
+**Vulnerability:** IDOR in multiple endpoints (`details.php`, `override.php`, `clearsubmissions.php`, `export.php`, `release.php`, and `classes/external/unlock_graders.php`) where user-provided IDs (`groupid`, `userid`, `graderid`, `peerworkid`) were used without verifying they belong to the authenticated course or activity context.
+**Learning:** `require_login($course)` only ensures the user has access to the course, but it doesn't protect against parameter manipulation where a user provides an ID (like a `groupid`) from a different course. Explicit validation of all input IDs against the context (e.g., `$group->courseid == $course->id`) is mandatory.
+**Prevention:** Always validate every ID parameter against the authenticated context object (Course, Module, or Group) immediately after retrieval and before any state-changing operations.
