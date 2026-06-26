@@ -1,0 +1,4 @@
+## 2026-06-26 - Robust Behat Testing for Activity Completion and Gradebook
+**Vulnerability:** Not a direct vulnerability, but a regression risk where security-related features (like completion conditions) cannot be verified due to brittle Behat tests across Moodle versions.
+**Learning:** In Moodle 4.1-4.5, enabling activity completion conditions requires setting the 'completion' field to '2', saving the page, and then re-navigating to the settings to ensure specific condition fields are interactable. Additionally, the 'I set the following settings for grade item' step is inconsistent; manual navigation to Gradebook setup and row-specific action menus is more reliable.
+**Prevention:** Use multi-step navigation for dynamic forms in Behat and favor generic text assertions (e.g., "I should see 'Done'") over version-specific button locators.
