@@ -92,7 +92,7 @@ Feature: Clear submissions
         | Student 3 | Exceeded |
     And I follow "Peer Assessment"
     And I press "Clear all submissions"
-    And I click on "Yes" "button" in the "Confirmation" "dialogue"
+    And I press "Yes"
     And I follow "Group 1"
     And I expand all fieldsets
     Then I should see "Nothing submitted yet" in the "Peer submission and grades" "fieldset"

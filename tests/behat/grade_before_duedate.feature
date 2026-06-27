@@ -71,7 +71,7 @@ Feature: Grade a submission before the due date has passed
     #Then the focused element is "Edit grade for group: Group 1" "field"
     And I click on "Edit grade for group: Group 1" "link"
     Then I should see "The due date has not passed. If you grade now then students will no longer be able to edit submissions. Do you wish to continue?"
-    And I click on "Yes" "button" in the "Grading before due date" "dialogue"
+    And I press "Yes"
     #Then "Escape to cancel, Enter when finished" "field" should exist
     Then ".inplace-grading .inplaceeditingon input" "css_element" should exist
     And "Group 1" row "Grade" column of "mod-peerwork-summary-table" table should contain "Escape to cancel, Enter when finished"
