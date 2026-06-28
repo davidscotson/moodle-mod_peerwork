@@ -148,10 +148,10 @@ class mod_peerwork_renderer extends plugin_renderer_base {
                 shuffle($members);
             }
 
-            $parts = array_map(function($criteriaid, $criteria) use ($data, $displaytotals, $isanon, $members, $scales) {
+            $parts = array_map(function($criteriaid, $criteria) use ($data, $displaytotals, $isanon, $members, $scales, $summary) {
                 $gradeinfo = $data['peergrades'][$criteriaid] ?? [];
                 $html = html_writer::start_div();
-                $html .= html_writer::div($criteria->description);
+                $html .= html_writer::div(format_text($criteria->description, $criteria->descriptionformat, ['context' => $summary->get_context()]));
 
                 $scaleid = abs($criteria->grade);
                 $scale = isset($scales[$scaleid]) ? $scales[$scaleid] : null;
@@ -261,7 +261,7 @@ class mod_peerwork_renderer extends plugin_renderer_base {
                 }
             } else if ($data['justificationtype'] == MOD_PEERWORK_JUSTIFICATION_CRITERIA) {
                 foreach ($data['criteria'] as $id => $criterion) {
-                    $html .= html_writer::tag('p', ($criterion->description));
+                    $html .= html_writer::tag('p', format_text($criterion->description, $criterion->descriptionformat, ['context' => $summary->get_context()]));
 
                     foreach ($members as $member) {
                         $justification = $data['justifications'][$id][$member->id] ?? null;

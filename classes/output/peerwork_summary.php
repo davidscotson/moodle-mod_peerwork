@@ -46,6 +46,9 @@ class peerwork_summary implements \renderable {
     /** @var object The status. */
     public $status;
 
+    /** @var \context_module|null The context. */
+    protected $context;
+
     /**
      * Constructor.
      *
@@ -61,5 +64,18 @@ class peerwork_summary implements \renderable {
         $this->membersgradeable = $membersgradeable;
         $this->peerwork = $peerwork;
         $this->status = $status ?? get_string('draftnotsubmitted', 'mod_peerwork');
+    }
+
+    /**
+     * Get the context.
+     *
+     * @return \context_module
+     */
+    public function get_context() {
+        if ($this->context === null) {
+            $cm = get_coursemodule_from_instance('peerwork', $this->peerwork->id, 0, false, MUST_EXIST);
+            $this->context = \context_module::instance($cm->id);
+        }
+        return $this->context;
     }
 }

@@ -61,6 +61,9 @@ class peerwork_detail_summary implements templatable, renderable {
     /** @var int Group id. */
     public $groupid;
 
+    /** @var \context_module|null The context. */
+    protected $context;
+
     /**
      * Constructor.
      *
@@ -100,6 +103,18 @@ class peerwork_detail_summary implements templatable, renderable {
     }
 
     /**
+     * Get the context.
+     *
+     * @return \context_module
+     */
+    public function get_context() {
+        if ($this->context === null) {
+            $this->context = \context_module::instance($this->cmid);
+        }
+        return $this->context;
+    }
+
+    /**
      * Export this class data as a flat list for rendering in a template.
      *
      * @param renderer_base $output The current page renderer.
@@ -128,7 +143,7 @@ class peerwork_detail_summary implements templatable, renderable {
             $extraclasses = $justenabledcrit ? 'crit' : '';
             $table['attributes']['id'] = "mod_peerwork_peergrades";
             $table['attributes']['class'] = "table-striped $extraclasses";
-            $table['caption'] = $criteria->description;
+            $table['caption'] = format_text($criteria->description, $criteria->descriptionformat, ['context' => $this->get_context()]);
 
             foreach ($members as $member) {
                 $gradedby = [];
