@@ -45,6 +45,10 @@ class peerwork_summary implements \renderable {
     public $peerwork;
     /** @var object The status. */
     public $status;
+    /** @var int The course module ID. */
+    public $cmid;
+    /** @var \context_module|null The context module. */
+    protected $_context = null;
 
     /**
      * Constructor.
@@ -53,13 +57,27 @@ class peerwork_summary implements \renderable {
      * @param stdClass $data The data.
      * @param stdClass[] $membersgradeable The members gradeable.
      * @param stdClass $peerwork The peerwork.
+     * @param int $cmid The course module ID.
      * @param stdClass|null $status The status.
      */
-    public function __construct($group, $data, $membersgradeable, $peerwork, $status = null) {
+    public function __construct($group, $data, $membersgradeable, $peerwork, $cmid, $status = null) {
         $this->group = $group;
         $this->data = $data;
         $this->membersgradeable = $membersgradeable;
         $this->peerwork = $peerwork;
+        $this->cmid = $cmid;
         $this->status = $status ?? get_string('draftnotsubmitted', 'mod_peerwork');
+    }
+
+    /**
+     * Get the context.
+     *
+     * @return \context_module
+     */
+    public function get_context() {
+        if ($this->_context === null) {
+            $this->_context = \context_module::instance($this->cmid);
+        }
+        return $this->_context;
     }
 }
