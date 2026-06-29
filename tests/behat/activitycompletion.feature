@@ -41,8 +41,10 @@ Feature: Assignment submissions
       | Criteria 1 scoring type | Default competence scale  |
     And I am on the "Test peerwork name" "peerwork activity" page
     And I navigate to "Settings" in current page administration
+    And I expand all fieldsets
     And I set the field "completion" to "2"
     And I press "Save and display"
+    And I am on the "Test peerwork name" "peerwork activity" page
     And I navigate to "Settings" in current page administration
     And I expand all fieldsets
     And I set the field "Grade peers in group" to "1"
@@ -58,15 +60,15 @@ Feature: Assignment submissions
   @javascript
   Scenario: Students who grades every peer is shown as completed
     When I am on "Course 1" course homepage
-    And "Done" "button" should exist in the "Test peerwork name" "activity"
+    Then I should see "Done" in the "Test peerwork name" "activity"
     And I log out
 
   @javascript
   Scenario: Students who has not graded every peer is not shown as completed
     And I log in as "student2"
     When I am on "Course 1" course homepage
-    And "Done" "button" should not exist in the "Test peerwork name" "activity"
-    And "To do" "button" should exist in the "Test peerwork name" "activity"
+    Then I should not see "Done" in the "Test peerwork name" "activity"
+    And I should see "To do" in the "Test peerwork name" "activity"
     And I log out
 
   @javascript
