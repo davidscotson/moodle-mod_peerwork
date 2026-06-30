@@ -35,6 +35,8 @@ namespace mod_peerwork\output;
  */
 class peerwork_summary implements \renderable {
 
+    /** @var int The cmid. */
+    public $cmid;
     /** @var object The group. */
     public $group;
     /** @var object The data. */
@@ -55,11 +57,21 @@ class peerwork_summary implements \renderable {
      * @param stdClass $peerwork The peerwork.
      * @param stdClass|null $status The status.
      */
-    public function __construct($group, $data, $membersgradeable, $peerwork, $status = null) {
+    public function __construct($group, $data, $membersgradeable, $peerwork, $status = null, $cmid = 0) {
         $this->group = $group;
         $this->data = $data;
         $this->membersgradeable = $membersgradeable;
         $this->peerwork = $peerwork;
         $this->status = $status ?? get_string('draftnotsubmitted', 'mod_peerwork');
+        $this->cmid = $cmid;
+    }
+
+    /**
+     * Get context.
+     *
+     * @return \context_module
+     */
+    public function get_context() {
+        return \context_module::instance($this->cmid);
     }
 }
