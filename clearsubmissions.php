@@ -40,6 +40,14 @@ $PAGE->set_url('/mod/peerwork/clearsubmissions.php', ['id' => $cm->id, 'groupid'
 
 $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 
+if ($groupid > 0) {
+    // Validate group ID.
+    $group = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
+    if ($group->courseid != $course->id) {
+        throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+    }
+}
+
 mod_peerwork_clear_submissions($peerwork, $context, $groupid);
 
 redirect(new moodle_url('/mod/peerwork/view.php', ['id' => $cm->id]));
