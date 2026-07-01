@@ -43,7 +43,7 @@ Feature: Assignment submissions
     And I navigate to "Settings" in current page administration
     And I expand all fieldsets
     And I set the field "completion" to "2"
-    And I press "Save changes"
+    And I press "Save and display"
     And I navigate to "Settings" in current page administration
     And I expand all fieldsets
     And I set the field "Grade peers in group" to "1"
