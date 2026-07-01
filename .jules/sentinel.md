@@ -1,0 +1,4 @@
+## 2026-06-24 - Systemic IDOR via Missing Parameter Context Validation
+**Vulnerability:** IDOR vulnerabilities across `details.php`, `override.php`, `clearsubmissions.php`, `export.php`, `release.php`, and `classes/external/unlock_graders.php` due to missing course context validation for `groupid`, `userid`, and `peerworkid` parameters.
+**Learning:** `require_login($course)` ensures the user has access to the course but does not automatically validate that subsequent parameters provided in the request (like `groupid`) actually belong to that course context. Attackers could manipulate these IDs to access or modify data across different groups or activities.
+**Prevention:** Always explicitly validate that request parameters (e.g., `groupid`, `userid`, `graderid`) belong to the current course and activity context after calling `require_login`. Use functions like `groups_is_member` and explicit `$group->courseid != $course->id` checks before performing operations.
