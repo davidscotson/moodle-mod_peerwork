@@ -37,6 +37,14 @@ require_login($course, true, $cm);
 require_sesskey();
 require_capability('mod/peerwork:grade', $cm->context);
 
+// IDOR prevention: Ensure the group belongs to the course.
+if ($groupid > 0) {
+    $group = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
+    if ($group->courseid != $course->id) {
+        throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+    }
+}
+
 $PAGE->set_url(new moodle_url('/mod/peerwork/export.php', ['id' => $id, 'groupid' => $groupid]));
 
 if (empty($groupid)) {
