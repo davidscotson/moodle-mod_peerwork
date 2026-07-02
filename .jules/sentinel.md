@@ -1,0 +1,4 @@
+## 2025-05-14 - IDOR Vulnerabilities in mod_peerwork
+**Vulnerability:** Insecure Direct Object Reference (IDOR) across multiple endpoints (`details.php`, `override.php`, `clearsubmissions.php`, `export.php`, `release.php`, and `classes/external/unlock_graders.php`).
+**Learning:** Request parameters like `groupid`, `userid`, and `peerworkid` were being used to fetch or modify data without verifying their consistency with the authenticated course or activity context. `require_login($course)` only ensures the user has access to the course, not that they are accessing data belonging to that specific course.
+**Prevention:** Always validate user-provided IDs against the authenticated context. For groups, verify `$group->courseid == $course->id`. For external functions, use `is_enrolled($context, $userid)`. Ensure `require_login` is called before any database lookups using request parameters.
