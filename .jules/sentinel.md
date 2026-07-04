@@ -1,0 +1,4 @@
+## 2025-05-24 - Systemic IDOR in mod_peerwork
+**Vulnerability:** Systemic Insecure Direct Object Reference (IDOR) across multiple endpoints (`details.php`, `override.php`, etc.) where `groupid`, `userid`, and `peerworkid` were not validated against the authenticated course context.
+**Learning:** `require_login($course)` only ensures the user has access to the course, but it doesn't prevent them from manipulating numeric IDs in the URL to access or modify data belonging to other groups or users within the same course if explicit ownership or membership checks are missing.
+**Prevention:** Always validate that user-provided IDs (groups, users, instances) belong to the current course and activity context. For groups, check `$group->courseid == $course->id`. For users, check if they are members of the group or enrolled in the course module.
