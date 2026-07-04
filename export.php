@@ -31,9 +31,18 @@ $id = required_param('id', PARAM_INT);
 $groupid = optional_param('groupid', 0, PARAM_INT);
 
 list($course, $cm) = get_course_and_cm_from_cmid($id, 'peerwork');
-$peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 
 require_login($course, true, $cm);
+
+// Security: Validate that the group belongs to the course if provided.
+if (!empty($groupid)) {
+    $group = $DB->get_record('groups', ['id' => $groupid], '*', MUST_EXIST);
+    if ($group->courseid != $course->id) {
+        throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+    }
+}
+
+$peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 require_sesskey();
 require_capability('mod/peerwork:grade', $cm->context);
 
