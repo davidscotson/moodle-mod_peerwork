@@ -37,6 +37,13 @@ require_login($course, true, $cm);
 require_sesskey();
 require_capability('mod/peerwork:grade', $cm->context);
 
+// Validate that groupid belongs to this course.
+if ($groupid > 0) {
+    if (!groups_group_exists($groupid) || !groups_get_group($groupid) || groups_get_group($groupid)->courseid != $course->id) {
+        throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+    }
+}
+
 $PAGE->set_url(new moodle_url('/mod/peerwork/export.php', ['id' => $id, 'groupid' => $groupid]));
 
 if (empty($groupid)) {

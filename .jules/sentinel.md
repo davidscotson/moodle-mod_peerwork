@@ -1,0 +1,4 @@
+## 2026-06-24 - Systemic IDOR Prevention in mod_peerwork
+**Vulnerability:** Systemic IDOR vulnerabilities across multiple endpoints (details.php, export.php, clearsubmissions.php, override.php, release.php, and unlock_graders.php) allowed unauthorized access to group and user data across different courses by manipulating `groupid`, `peerworkid`, and `userid` parameters.
+**Learning:** `require_login($course)` only verifies that the user is logged into the course; it does not automatically validate that other ID parameters in the request belong to that course context. Early validation of all request parameters against the authenticated course context is essential.
+**Prevention:** Always validate that `groupid` and other entity IDs belong to the current course context immediately after `require_login` and before performing any database operations or data processing using those IDs.
