@@ -95,7 +95,7 @@ Feature: Edit the grade of a submission
     And I navigate to "Setup > Gradebook setup" in the course gradebook
     And I open the action menu in "Test peerwork name" "table_row"
     And I click on "Edit" "link" in the "Test peerwork name" "table_row"
-    And I click on "Edit settings" "link" in the "Test peerwork name" "table_row"
+    And I click on "Edit settings" "link"
     And I set the field "Hidden" to "1"
     And I press "Save changes"
     And I log out
