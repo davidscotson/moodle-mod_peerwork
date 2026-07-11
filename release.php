@@ -34,6 +34,12 @@ $context = context_module::instance($cm->id);
 
 require_login($course, false, $cm);
 require_sesskey();
+
+// Validate group ID.
+if ($groupid > 0 && !$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $course->id])) {
+    throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+}
+
 require_capability('mod/peerwork:grade', $context);
 
 $PAGE->set_url('/mod/peerwork/release.php', ['id' => $cm->id, 'groupid' => $groupid]);

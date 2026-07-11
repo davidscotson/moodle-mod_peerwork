@@ -35,6 +35,12 @@ $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST
 
 require_login($course, true, $cm);
 require_sesskey();
+
+// Validate group ID.
+if ($groupid > 0 && !$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $course->id])) {
+    throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+}
+
 require_capability('mod/peerwork:grade', $cm->context);
 
 $PAGE->set_url(new moodle_url('/mod/peerwork/export.php', ['id' => $id, 'groupid' => $groupid]));
