@@ -128,12 +128,13 @@ class peerwork_detail_summary implements templatable, renderable {
             $extraclasses = $justenabledcrit ? 'crit' : '';
             $table['attributes']['id'] = "mod_peerwork_peergrades";
             $table['attributes']['class'] = "table-striped $extraclasses";
-            $table['caption'] = $criteria->description;
+            $table['caption'] = format_string($criteria->description);
 
             foreach ($members as $member) {
                 $gradedby = [];
-                $gradefor = ['name' => fullname($member)];
-                $label = fullname($member);
+                $escapedname = s(fullname($member));
+                $gradefor = ['name' => $escapedname];
+                $label = $escapedname;
 
                 if ($canunlock && in_array($member->id, $lockedgraders)) {
                     $label .= $output->action_icon('#',
@@ -224,7 +225,7 @@ class peerwork_detail_summary implements templatable, renderable {
                                 $feedbacktext = $feedbackrendered["$member->id-$critid-$peer->id"];
                             } else {
                                 $feedbacktext = print_collapsible_region(
-                                        $justifications[$member->id][$critid][$peer->id]->justification,
+                                        s($justifications[$member->id][$critid][$peer->id]->justification),
                                         'peerwork-feedback',
                                         'peerwork-feedback-' .
                                         $member->id .
@@ -307,7 +308,7 @@ class peerwork_detail_summary implements templatable, renderable {
                                 $feedbacktext = $feedbackrendered["$peer->id-$critid-$member->id"];
                             } else {
                                 $feedbacktext = print_collapsible_region(
-                                        $justifications[$peer->id][$critid][$member->id]->justification,
+                                        s($justifications[$peer->id][$critid][$member->id]->justification),
                                         'peerwork-feedback',
                                         'peerwork-feedback-' .
                                         $peer->id .
