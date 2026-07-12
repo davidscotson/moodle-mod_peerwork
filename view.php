@@ -246,7 +246,7 @@ if (has_capability('mod/peerwork:grade', $context)) {
                 $data['mygrade'] = $grade->str_grade;
             }
 
-            $data['feedback'] = $submission->feedbacktext;
+            $data['feedback'] = format_text($submission->feedbacktext, $submission->feedbackformat, $context);
             $data['feedback_files'] = peerwork_feedback_files($context, $group);
             $pac = new mod_peerwork_criteria($peerwork->id);
             $data['criteria'] = $pac->get_criteria();
