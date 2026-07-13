@@ -50,24 +50,24 @@ Feature: Lock and unlock submissions
     And I give "student0" grade "0" for criteria "Criteria 1"
     And I give "student2" grade "1" for criteria "Criteria 1"
     And I give "student3" grade "1" for criteria "Criteria 1"
-    And I click on "Save changes" "button"
-    And I click on "Yes" "button"
+    And I press "Save changes"
+    And I press "Yes"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student2
     And I press "Add submission"
     And I give "student0" grade "0" for criteria "Criteria 1"
     And I give "student1" grade "1" for criteria "Criteria 1"
     And I give "student3" grade "1" for criteria "Criteria 1"
-    And I click on "Save changes" "button"
-    And I click on "Yes" "button"
+    And I press "Save changes"
+    And I press "Yes"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student3
     And I press "Add submission"
     And I give "student0" grade "0" for criteria "Criteria 1"
     And I give "student1" grade "1" for criteria "Criteria 1"
     And I give "student2" grade "1" for criteria "Criteria 1"
-    And I click on "Save changes" "button"
-    And I click on "Yes" "button"
+    And I press "Save changes"
+    And I press "Yes"
     And I log out
 
   @javascript
