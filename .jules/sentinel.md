@@ -1,0 +1,4 @@
+## 2024-06-12 - [Systemic IDOR in Teacher-Facing Endpoints]
+**Vulnerability:** Multiple teacher-facing scripts (`details.php`, `override.php`, `clearsubmissions.php`, etc.) accepted `groupid`, `pid` (peerwork id), and `uid` (user id) as parameters but did not verify that these IDs belonged to the course context established by the `id` (course module id) parameter.
+**Learning:** `require_login($course, true, $cm)` only ensures the user has access to the course and module, but doesn't automatically restrict database queries using other ID parameters. Attackers could manipulate these IDs to access or modify data in other courses.
+**Prevention:** Always validate that any object ID provided in request parameters (group, user, etc.) belongs to the `$course->id` or `$cm->instance` validated by `require_login`. Perform these checks immediately after `require_login` and before any business logic.
