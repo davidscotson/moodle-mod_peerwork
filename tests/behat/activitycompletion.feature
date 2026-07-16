@@ -46,8 +46,7 @@ Feature: Assignment submissions
     And I press "Save and display"
     And I navigate to "Settings" in current page administration
     And I click on "Expand all" "link" in the "region-main" "region"
-    And I set the following fields to these values:
-      | Grade peers in group | 1 |
+    And I set the field "Grade peers in group" to "1"
     And I press "Save and return to course"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1

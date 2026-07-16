@@ -1,4 +1,4 @@
-## 2024-07-15 - Systemic IDOR Remediation
+## 2024-07-15 - Systemic IDOR Remediation & Behat CI Fixes
 **Vulnerability:** Systemic IDOR vulnerabilities across multiple endpoints (details.php, override.php, clearsubmissions.php, export.php, release.php, and classes/external/unlock_graders.php) due to missing or insufficient course context and user/group relationship validation.
-**Learning:** Teacher-facing endpoints often assumed that possession of a valid course module ID (id) was sufficient, failing to validate that other ID parameters (groupid, pid, uid, graderid) belonged to the same context.
-**Prevention:** Always call require_login as early as possible and explicitly validate all ID parameters against the course and activity context before performing any database operations or business logic.
+**Learning:** Teacher-facing endpoints often assumed that possession of a valid course module ID (id) was sufficient, failing to validate that other ID parameters (groupid, pid, uid, graderid) belonged to the same context. Additionally, Moodle 4.x UI changes (e.g., action menus and activity completion indicators) require specific locator patterns in Behat tests to remain cross-version compatible.
+**Prevention:** Always call require_login as early as possible and explicitly validate all ID parameters against the course and activity context. For robust Behat tests, prefer clicking 'Edit' links in table rows before 'Edit settings' and set completion fields individually.
