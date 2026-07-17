@@ -41,11 +41,11 @@ Feature: Assignment submissions
       | Criteria 1 scoring type | Default competence scale  |
     And I am on the "Test peerwork name" "peerwork activity" page
     And I navigate to "Settings" in current page administration
-    And I expand all fieldsets
+    And I click on "Expand all" "link" in the "region-main" "region"
     And I set the field "completion" to "2"
     And I press "Save and display"
     And I navigate to "Settings" in current page administration
-    And I expand all fieldsets
+    And I click on "Expand all" "link" in the "region-main" "region"
     And I set the field "Grade peers in group" to "1"
     And I press "Save and return to course"
     And I log out
