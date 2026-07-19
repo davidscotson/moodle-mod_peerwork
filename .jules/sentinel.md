@@ -1,0 +1,4 @@
+## 2026-07-20 - Web Service IDOR via Parameter Manipulation
+**Vulnerability:** Innamespaced external API web services like `unlock_graders.php`, parameter input (such as `graderid`) was processed without validation that the user-provided ID belongs to the current course/activity context. An authorized grader in one course could unlock/manipulate arbitrary grader IDs across the entire Moodle platform.
+**Learning:** Checking permissions via `require_capability` alone verifies the user's role capability inside the current context, but does not validate that the resource identifiers passed as arguments belong to the same context.
+**Prevention:** Always perform context validation on all input parameters using APIs like `is_enrolled($context, $userid)` or `$DB->record_exists(...)` to ensure the entity lies within the authorized course/activity boundary.
