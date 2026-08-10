@@ -36,6 +36,11 @@ require_login($course, false, $cm);
 require_sesskey();
 require_capability('mod/peerwork:grade', $context);
 
+if ($groupid > 0) {
+    // Validate that the group belongs to this course context to prevent IDOR.
+    $group = $DB->get_record('groups', ['id' => $groupid, 'courseid' => $course->id], '*', MUST_EXIST);
+}
+
 $PAGE->set_url('/mod/peerwork/clearsubmissions.php', ['id' => $cm->id, 'groupid' => $groupid]);
 
 $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
