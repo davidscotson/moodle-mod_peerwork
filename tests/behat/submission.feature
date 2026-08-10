@@ -130,7 +130,7 @@ Feature: Assignment submissions
       | Student 2 | Did well |
       | Student 3 | Exceeded |
     And I click on "Save changes" "button"
-    And I click on "Yes" "button"
+    And I press "Yes"
     And I press "Edit submission"
     Then "Assignment" "field" should not be visible
     And "Criteria 1" "student0" rating should be disabled
@@ -161,7 +161,7 @@ Feature: Assignment submissions
     And I give "student2" justification "Did well " for criteria "Criteria 1"
     And I give "student3" justification "Exceeded" for criteria "Criteria 1"
     And I click on "Save changes" "button"
-    And I click on "Yes" "button" in the "Are you sure?" "dialogue"
+    And I press "Yes"
     And I press "Edit submission"
     Then "Assignment" "field" should not be visible
     And "Criteria 1" "student0" rating should be disabled
