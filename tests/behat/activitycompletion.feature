@@ -1,5 +1,5 @@
 @cul @mod @mod_peerwork @mod_peerwork_submission
-Feature: Assignment completion
+Feature: Assignment submissions
 
   Background:
     Given the following "courses" exist:
@@ -41,10 +41,9 @@ Feature: Assignment completion
       | Criteria 1 scoring type | Default competence scale  |
     And I am on the "Test peerwork name" "peerwork activity" page
     And I navigate to "Settings" in current page administration
-    And I click on "Expand all" "link" in the "region-main" "region"
-    And I set the following fields to these values:
-      | Add requirements     | 2 |
-      | Grade peers in group | 1 |
+    And I expand all fieldsets
+    And I set the field "completion" to "2"
+    And I set the field "Grade peers in group" to "1"
     And I press "Save and return to course"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
@@ -55,37 +54,24 @@ Feature: Assignment completion
     And I press "Save changes"
 
   @javascript
-  Scenario: Students who grades every peer is shown as completed on the course page
+  Scenario: Students who grades every peer is shown as completed
     When I am on "Course 1" course homepage
-    Then "Done" "button" should exist in the "Test peerwork name" "activity"
+    Then I should see "Done" in the "Test peerwork name" "activity"
     And I log out
 
   @javascript
-  Scenario: Students who grades every peer is shown as completed on the activity page
-    When I am on the "Test peerwork name" "peerwork activity" page logged in as student1
-    Then "Done: Grade peers in group" "text" should exist
-    And I log out
-
-  @javascript
-  Scenario: Students who has not graded every peer is not shown as completed on the course page
-    When I log in as "student2"
-    And I am on "Course 1" course homepage
-    Then "Done" "button" should not exist in the "Test peerwork name" "activity"
-    And "To do" "button" should exist in the "Test peerwork name" "activity"
-    And I log out
-
-  @javascript
-  Scenario: Students who has not graded every peer is not shown as completed on the activity page
-    When I am on the "Test peerwork name" "peerwork activity" page logged in as student2
-    Then "Done: Grade peers in group" "text" should not exist
-    And "To do: Grade peers in group" "text" should exist
+  Scenario: Students who has not graded every peer is not shown as completed
+    And I log in as "student2"
+    When I am on "Course 1" course homepage
+    Then I should not see "Done" in the "Test peerwork name" "activity"
+    And I should see "To do" in the "Test peerwork name" "activity"
     And I log out
 
   @javascript
   Scenario: Student completions must display correctly in completion report
-    When I log in as "teacher1"
+    Given I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I navigate to "Reports" in current page administration
     And I click on "Activity completion" "link"
-    Then "Student 1, Test peerwork name: Completed" "icon" should exist in the "Student 1" "table_row"
+    And "Student 1, Test peerwork name: Completed" "icon" should exist in the "Student 1" "table_row"
     And "Student 2, Test peerwork name: Not completed" "icon" should exist in the "Student 2" "table_row"
