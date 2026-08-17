@@ -133,6 +133,7 @@ $string['hideshow'] = 'Hide/Show';
 $string['invalidgrade'] = 'Invalid grade';
 $string['invalidpaweighting'] = 'Invalid weighting';
 $string['invalidscale'] = 'Invalid scale. Please select from options above.';
+$string['invaliduserid'] = 'Invalid user ID';
 $string['justification'] = 'Justification';
 $string['justification_help'] = 'Enable/disable justification comments and select visibility.';
 $string['justificationbyfor'] = 'By {$a} for';
