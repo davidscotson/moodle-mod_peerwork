@@ -61,6 +61,11 @@ class unlock_graders extends \external_api {
         self::validate_context($context);
         require_capability('mod/peerwork:grade', $context);
 
+        // Security check: ensure grader is enrolled in the course context to prevent IDOR parameter tampering.
+        if (!is_enrolled($context, $graderid)) {
+            throw new \invalid_parameter_exception('Invalid grader ID for this course context.');
+        }
+
         mod_peerwork_unlock_grader($peerworkid, $graderid);
 
         return true;
