@@ -623,7 +623,8 @@ function peerwork_submission_files($context, $group) {
             $fileurl = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
                 $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename());
 
-            $allfiles[] = "<a href='$fileurl'>" . s($file->get_filename()) . '</a>';
+            // Escape URL and filename to prevent XSS.
+            $allfiles[] = "<a href='" . s($fileurl) . "'>" . s($file->get_filename()) . '</a>';
         }
     }
     return $allfiles;
@@ -644,7 +645,8 @@ function peerwork_feedback_files($context, $group) {
             $fileurl = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
                 $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename());
 
-            $allfiles[] = "<a href='$fileurl'>" . $file->get_filename() . '</a>';
+            // Escape URL and filename to prevent XSS.
+            $allfiles[] = "<a href='" . s($fileurl) . "'>" . s($file->get_filename()) . '</a>';
         }
     }
     return $allfiles;
