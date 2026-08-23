@@ -60,6 +60,11 @@ class unlock_submission extends \external_api {
         self::validate_context($context);
         require_capability('mod/peerwork:grade', $context);
 
+        // Security check: Ensure that the submission's peerwork ID matches the course module instance ID.
+        if ($submission->peerworkid != $cm->instance) {
+            throw new \moodle_exception('invalidpeerworkid', 'mod_peerwork');
+        }
+
         // This function validates that the submission belongs to the peerwork instance.
         mod_peerwork_unlock_submission($submissionid);
 
