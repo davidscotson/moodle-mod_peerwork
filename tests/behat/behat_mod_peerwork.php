@@ -321,22 +321,6 @@ class behat_mod_peerwork extends behat_base {
      * @throws ElementNotFoundException Thrown by behat_base::find
      *
      */
-    /**
-     * Set settings for grade item.
-     *
-     * @Given /^I set the following settings for grade item "(?P<grade_item_string>(?:[^"]|\\")*)":$/
-     *
-     * @param string $gradeitem
-     * @param Behat\Gherkin\Node\TableNode $data
-     */
-    public function i_set_the_following_settings_for_grade_item($gradeitem, \Behat\Gherkin\Node\TableNode $data) {
-        $this->execute('behat_action_menu::i_open_the_action_menu_in', [$gradeitem, 'table_row']);
-        $this->execute('behat_general::i_click_on_in_the', ['Edit settings', 'link', $gradeitem, 'table_row']);
-        $this->execute('behat_forms::i_expand_all_fieldsets', []);
-        $this->execute('behat_forms::i_set_the_following_fields_to_these_values', [$data]);
-        $this->execute('behat_forms::press_button', ['Save changes']);
-    }
-
     public function i_remove_user_from_group_members($userfullname, $groupname) {
 
         $userfullname = behat_context_helper::escape($userfullname);
