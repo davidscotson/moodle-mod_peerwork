@@ -365,4 +365,20 @@ class behat_mod_peerwork extends behat_base {
         // Returning to the main groups page.
         $this->find_button(get_string('backtogroups', 'group'))->click();
     }
+
+    /**
+     * Sets the settings for a specified grade item in Gradebook setup.
+     *
+     * @Given /^I set the following settings for grade item "(?P<gradeitem_string>[^"]*)":$/
+     *
+     * @param string $gradeitem
+     * @param \Behat\Gherkin\Node\TableNode $data
+     */
+    public function i_set_the_following_settings_for_grade_item($gradeitem, \Behat\Gherkin\Node\TableNode $data) {
+        $this->execute('behat_action_menu::i_open_the_action_menu_in', [$gradeitem, 'table_row']);
+        $this->execute('behat_general::i_click_on', ['Edit settings', 'link']);
+        $this->execute('behat_forms::i_expand_all_fieldsets', []);
+        $this->execute('behat_forms::i_set_the_following_fields_to_these_values', [$data]);
+        $this->execute('behat_forms::press_button', [get_string('savechanges')]);
+    }
 }
