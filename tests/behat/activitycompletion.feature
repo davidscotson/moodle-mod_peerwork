@@ -32,14 +32,16 @@ Feature: Assignment submissions
       | calculator | webpa | peerwork |
     And I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "peerwork" activity to course "Course 1" section "1" and I fill the form with:
+    And I add a "peerwork" activity to course "Course 1" section "1"
+    And I expand all fieldsets
+    And I set the following fields to these values:
       | Peer assessment         | Test peerwork name        |
       | Description             | Test peerwork description |
       | Peer grades visibility  | Hidden from students      |
       | Require justification   | Disabled                  |
       | Criteria 1 description  | Criteria 1                |
       | Criteria 1 scoring type | Default competence scale  |
-    And I am on the "Test peerwork name" "peerwork activity" page
+    And I press "Save and display"
     And I navigate to "Settings" in current page administration
     And I expand all fieldsets
     And I set the field "completion" to "2"

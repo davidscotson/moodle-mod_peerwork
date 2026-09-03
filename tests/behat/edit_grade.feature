@@ -35,7 +35,9 @@ Feature: Edit the grade of a submission
       | calculator | webpa | peerwork |
     And I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "peerwork" activity to course "Course 1" section "1" and I fill the form with:
+    And I add a "peerwork" activity to course "Course 1" section "1"
+    And I expand all fieldsets
+    And I set the following fields to these values:
       | Peer assessment           | Test peerwork name        |
       | Description               | Test peerwork description |
       | Peer grades visibility    | Hidden from students      |
@@ -43,6 +45,7 @@ Feature: Edit the grade of a submission
       | Criteria 1 description    | Criteria 1                |
       | Criteria 1 scoring type   | Default competence scale  |
       | Peer assessment weighting | 0                         |
+    And I press "Save and return to course"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
     And I press "Add submission"
@@ -94,10 +97,7 @@ Feature: Edit the grade of a submission
     Given I am on the "Course 1" course page logged in as teacher1
     And I navigate to "Setup > Gradebook setup" in the course gradebook
     And I open the action menu in "Test peerwork name" "table_row"
-    And I click on "Edit settings" "link"
-    And I expand all fieldsets
-    And I set the field "Hidden" to "1"
-    And I press "Save changes"
+    And I choose "Hide" in the open action menu
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
     Then "My final grade" "table_row" should not exist
