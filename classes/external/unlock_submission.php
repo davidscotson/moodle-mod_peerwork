@@ -56,6 +56,12 @@ class unlock_submission extends \external_api {
 
         $submission = $DB->get_record('peerwork_submission', ['id' => $submissionid], '*', MUST_EXIST);
         $cm = get_coursemodule_from_instance('peerwork', $submission->peerworkid, 0, false, MUST_EXIST);
+
+        // Security check: Validate that submission's peerwork ID matches the course module instance.
+        if ($submission->peerworkid != $cm->instance) {
+            throw new \invalid_parameter_exception('Invalid submission ID for this peerwork instance.');
+        }
+
         $context = \context_module::instance($cm->id);
         self::validate_context($context);
         require_capability('mod/peerwork:grade', $context);
