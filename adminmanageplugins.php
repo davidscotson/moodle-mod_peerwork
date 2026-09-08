@@ -31,14 +31,19 @@ $plugin = optional_param('plugin', null, PARAM_PLUGIN);
 
 require_login();
 
-if (!empty($plugin)) {
+// Enforce system-level admin capability check.
+$systemcontext = context_system::instance();
+require_capability('moodle/site:config', $systemcontext);
+
+// Validate session key for state-changing actions.
+if (!empty($action) && $action !== 'view') {
     require_sesskey();
 }
 
 // Create the class for this controller.
 $pluginmanager = new peerwork_plugin_manager($subtype);
 
-$PAGE->set_context(context_system::instance());
+$PAGE->set_context($systemcontext);
 
 // Execute the controller.
 $pluginmanager->execute($action, $plugin);
