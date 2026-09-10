@@ -28,7 +28,12 @@ $id   = required_param('id', PARAM_INT);                  // Course module ID.
 $itemnumber = optional_param('itemnumber', 0, PARAM_INT); // Item number.
 $userid = optional_param('userid', 0, PARAM_INT);         // User ID.
 
-require_login();
+list($course, $cm) = get_course_and_cm_from_cmid($id, 'peerwork');
+$context = context_module::instance($cm->id);
+
+// Enforce course-level authentication and capability check before redirecting to prevent authorization bypass.
+require_login($course, true, $cm);
+require_capability('mod/peerwork:view', $context);
 
 // In the simplest case just redirect to the view page.
-redirect('view.php?id=' . $id);
+redirect(new moodle_url('/mod/peerwork/view.php', ['id' => $cm->id]));
