@@ -50,7 +50,7 @@ if ($peerworkid != $cm->instance) {
     throw new moodle_exception('invalidpeerworkid', 'mod_peerwork');
 }
 
-if (!groups_group_belongs_to_course($groupid, $course->id)) {
+if (!$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $course->id])) {
     throw new moodle_exception('invalidgroupid', 'mod_peerwork');
 }
 
