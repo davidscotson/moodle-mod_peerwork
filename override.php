@@ -36,6 +36,10 @@ $cm = get_coursemodule_from_id('peerwork', $id, 0, false, MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 $peerwork = $DB->get_record('peerwork', ['id' => $cm->instance], '*', MUST_EXIST);
 
+if ($peerworkid != $cm->instance) {
+    throw new moodle_exception('invalidpeerworkid', 'mod_peerwork');
+}
+
 // Print the standard page header and check access rights.
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
@@ -45,9 +49,14 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 require_capability('mod/peerwork:grade', $context);
 
+$group = $DB->get_record('groups', ['id' => $groupid, 'courseid' => $course->id], '*', MUST_EXIST);
 $gradedby = new stdClass();
 $gradedby->id = $gradedbyid;
-$members = groups_get_members($groupid);
+$members = groups_get_members($group->id);
+
+if (!array_key_exists($gradedbyid, $members)) {
+    throw new moodle_exception('invaliduserid', 'mod_peerwork');
+}
 $grades = peerwork_grades_overrides_by_user($peerwork, $gradedby, $members);
 $header = get_string('gradesgivenby', 'peerwork', fullname($members[$gradedby->id]));
 
