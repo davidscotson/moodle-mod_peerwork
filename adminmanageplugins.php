@@ -30,8 +30,9 @@ $action = optional_param('action', null, PARAM_PLUGIN);
 $plugin = optional_param('plugin', null, PARAM_PLUGIN);
 
 require_login();
+require_capability('moodle/site:config', context_system::instance());
 
-if (!empty($plugin)) {
+if (!empty($action)) {
     require_sesskey();
 }
 
