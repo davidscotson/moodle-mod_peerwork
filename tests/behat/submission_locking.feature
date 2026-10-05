@@ -50,24 +50,24 @@ Feature: Lock and unlock submissions
     And I give "student0" grade "0" for criteria "Criteria 1"
     And I give "student2" grade "1" for criteria "Criteria 1"
     And I give "student3" grade "1" for criteria "Criteria 1"
-    And I click on "Save changes" "button"
-    And I click on "Yes" "button"
+    And I press "Save changes"
+    And I press "Yes"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student2
     And I press "Add submission"
     And I give "student0" grade "0" for criteria "Criteria 1"
     And I give "student1" grade "1" for criteria "Criteria 1"
     And I give "student3" grade "1" for criteria "Criteria 1"
-    And I click on "Save changes" "button"
-    And I click on "Yes" "button"
+    And I press "Save changes"
+    And I press "Yes"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student3
     And I press "Add submission"
     And I give "student0" grade "0" for criteria "Criteria 1"
     And I give "student1" grade "1" for criteria "Criteria 1"
     And I give "student2" grade "1" for criteria "Criteria 1"
-    And I click on "Save changes" "button"
-    And I click on "Yes" "button"
+    And I press "Save changes"
+    And I press "Yes"
     And I log out
 
   @javascript
@@ -77,7 +77,7 @@ Feature: Lock and unlock submissions
     And I expand all fieldsets
     Then "unlock_submission_btn" "link" should exist in the "Peer submission and grades" "fieldset"
     And I follow "unlock_submission_btn"
-    And I click on "Yes" "button" in the "Are you sure?" "dialogue"
+    And I press "Yes"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
     And I press "Edit submission"
@@ -93,7 +93,7 @@ Feature: Lock and unlock submissions
     And I follow "Group 1"
     And I expand all fieldsets
     And I click on "//a[@data-graderfullname='Student 1']" "xpath_element"
-    And I click on "Yes" "button" in the "Are you sure?" "dialogue"
+    And I press "Yes"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
     And I press "Edit submission"
