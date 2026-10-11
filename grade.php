@@ -22,13 +22,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . "/../../config.php");
+require_once(__DIR__ . '/../../config.php');
 
 $id   = required_param('id', PARAM_INT);                  // Course module ID.
 $itemnumber = optional_param('itemnumber', 0, PARAM_INT); // Item number.
 $userid = optional_param('userid', 0, PARAM_INT);         // User ID.
 
-require_login();
+list($course, $cm) = get_course_and_cm_from_cmid($id, 'peerwork');
+
+// Enforce course-level login and check view capability for authorization.
+require_login($course, true, $cm);
+require_capability('mod/peerwork:view', $cm->context);
 
 // In the simplest case just redirect to the view page.
-redirect('view.php?id=' . $id);
+redirect(new moodle_url('/mod/peerwork/view.php', ['id' => $cm->id]));
