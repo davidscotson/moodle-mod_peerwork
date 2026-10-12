@@ -38,7 +38,13 @@ if (!empty($plugin)) {
 // Create the class for this controller.
 $pluginmanager = new peerwork_plugin_manager($subtype);
 
-$PAGE->set_context(context_system::instance());
+$context = context_system::instance();
+$PAGE->set_context($context);
+require_capability('moodle/site:config', $context);
+
+if (!empty($action)) {
+    require_sesskey();
+}
 
 // Execute the controller.
 $pluginmanager->execute($action, $plugin);
