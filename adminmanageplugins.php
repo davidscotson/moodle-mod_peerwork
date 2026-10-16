@@ -30,15 +30,16 @@ $action = optional_param('action', null, PARAM_PLUGIN);
 $plugin = optional_param('plugin', null, PARAM_PLUGIN);
 
 require_login();
+$systemcontext = context_system::instance();
+$PAGE->set_context($systemcontext);
+require_capability('moodle/site:config', $systemcontext);
 
-if (!empty($plugin)) {
+if (!empty($action)) {
     require_sesskey();
 }
 
 // Create the class for this controller.
 $pluginmanager = new peerwork_plugin_manager($subtype);
-
-$PAGE->set_context(context_system::instance());
 
 // Execute the controller.
 $pluginmanager->execute($action, $plugin);
