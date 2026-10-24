@@ -273,7 +273,7 @@ if (has_capability('mod/peerwork:grade', $context)) {
 
         // Show mod details.
         echo $OUTPUT->heading(format_string($peerwork->name));
-        echo format_module_intro('peerwork', $peerwork, $cm->id);
+        echo $OUTPUT->box(format_string($peerwork->intro));
         $summary = new mod_peerwork\output\peerwork_summary($group, $data, $membersgradeable, $peerwork,
             $status->text . ' ' . $editabletext);
         echo $renderer->render($summary);
@@ -331,7 +331,7 @@ if (has_capability('mod/peerwork:grade', $context)) {
 
     // Show mod details.
     echo $OUTPUT->heading(format_string($peerwork->name));
-    echo format_module_intro('peerwork', $peerwork, $cm->id);
+    echo $OUTPUT->box(format_string($peerwork->intro));
 
     $mform->display();
     $params = [
