@@ -31,6 +31,10 @@ $plugin = optional_param('plugin', null, PARAM_PLUGIN);
 
 require_login();
 
+// Security: Enforce site configuration capability early before initializing or executing controller actions (Defense-in-depth).
+$systemcontext = context_system::instance();
+require_capability('moodle/site:config', $systemcontext);
+
 if (!empty($plugin)) {
     require_sesskey();
 }
