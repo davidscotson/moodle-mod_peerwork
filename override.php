@@ -45,9 +45,21 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 require_capability('mod/peerwork:grade', $context);
 
+// Security check: Prevent IDOR / parameter tampering by validating request parameters against course module and context.
+if ($peerworkid != $peerwork->id) {
+    throw new moodle_exception('invalidpeerworkid', 'mod_peerwork');
+}
+if (!$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $course->id])) {
+    throw new moodle_exception('invalidgroupid', 'mod_peerwork');
+}
+
 $gradedby = new stdClass();
 $gradedby->id = $gradedbyid;
 $members = groups_get_members($groupid);
+if (!isset($members[$gradedbyid])) {
+    throw new moodle_exception('invaliduserid', 'mod_peerwork');
+}
+
 $grades = peerwork_grades_overrides_by_user($peerwork, $gradedby, $members);
 $header = get_string('gradesgivenby', 'peerwork', fullname($members[$gradedby->id]));
 
