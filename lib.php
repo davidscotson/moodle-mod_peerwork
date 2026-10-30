@@ -402,7 +402,7 @@ function peerwork_pluginfile($course, $cm, $context, $filearea, $args, $forcedow
         return false;
     }
 
-    require_login();
+    require_login($course, false, $cm);
 
     if ($filearea != 'submission' && $filearea != 'feedback_files') {
 
