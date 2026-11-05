@@ -93,8 +93,10 @@ Feature: Edit the grade of a submission
   Scenario: Cannot view the gradebook hidden grade.
     Given I am on the "Course 1" course page logged in as teacher1
     And I navigate to "Setup > Gradebook setup" in the course gradebook
-    And I set the following settings for grade item "Test peerwork name":
-      | Hidden | 1 |
+    And I open the action menu in "Test peerwork name" "table_row"
+    And I choose "Edit settings" in the open action menu
+    And I set the field "Hidden" to "1"
+    And I press "Save changes"
     And I log out
     And I am on the "Test peerwork name" "peerwork activity" page logged in as student1
     Then "My final grade" "table_row" should not exist
