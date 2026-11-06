@@ -28,7 +28,16 @@ $id   = required_param('id', PARAM_INT);                  // Course module ID.
 $itemnumber = optional_param('itemnumber', 0, PARAM_INT); // Item number.
 $userid = optional_param('userid', 0, PARAM_INT);         // User ID.
 
-require_login();
+// Security: Retrieve course and course module records to enforce proper course-level login
+// and context validation rather than relying on site-level login.
+list($course, $cm) = get_course_and_cm_from_cmid($id, 'peerwork');
+$context = context_module::instance($cm->id);
+
+// Enforce login within the specific course module context.
+require_login($course, true, $cm);
+
+// Enforce access control check before allowing redirection.
+require_capability('mod/peerwork:view', $context);
 
 // In the simplest case just redirect to the view page.
 redirect('view.php?id=' . $id);
